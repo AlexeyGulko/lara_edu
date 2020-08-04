@@ -11,7 +11,7 @@
                     <p>
                         {{ $post->description }}
                     </p>
-                    <a href="{{ route('post.show', $post->slug) }}">Читать</a>
+                    <a href="{{ route('posts.show', $post->slug) }}">Читать</a>
                 </div>
             @endforeach
         </div>

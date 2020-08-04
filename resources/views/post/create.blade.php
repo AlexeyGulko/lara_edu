@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-md-8">
             <form
-                action="{{ route('post.store') }}"
+                action="{{ route('posts.store') }}"
                 method="POST"
                 class="needs-validation"
             >

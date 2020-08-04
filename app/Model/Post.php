@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
-    protected $fillable = ['title', 'slug', 'description', 'published'];
+    protected $fillable = ['title', 'slug', 'description', 'published', 'body'];
 
     public function getRouteKeyName()
     {

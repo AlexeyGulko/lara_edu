@@ -72,6 +72,22 @@
                 </div>
                 @enderror
             </div>
+            <div class="form-group">
+                <label for="tags">Тэги</label>
+                <input
+                    type="text"
+                    class="form-control @error('tags') is-invalid @enderror"
+                    id="tags"
+                    name="tags"
+                    placeholder="Введите тэги черезе запятую"
+                    value="{{ old('tags', $post->tags->pluck('name')->implode(',')) }}"
+                >
+                @error('description')
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+                @enderror
+            </div>
             <div class="form-group form-check">
                 <input
                     type="checkbox"

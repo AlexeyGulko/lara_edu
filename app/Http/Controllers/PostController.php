@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePost;
-use App\Model\Post;
+use App\Post;
+use App\Tag;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
@@ -22,7 +23,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::latest()->get();
+        $posts = Post::published()->with('tags')->latest()->get();
         return view('index', compact('posts'));
     }
 
@@ -44,7 +45,8 @@ class PostController extends Controller
      */
     public function store(StorePost $request)
     {
-        Post::create($request->validated());
+        $post = Post::create($request->validated());
+        $post->syncTags($request->tags);
         return redirect()->route('home');
     }
 
@@ -80,6 +82,8 @@ class PostController extends Controller
     public function update(StorePost $request, Post $post)
     {
         $post->update($request->validated());
+        $post->syncTags($request->tags);
+
         return redirect()->route('home');
     }
 

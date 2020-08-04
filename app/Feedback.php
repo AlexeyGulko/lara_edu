@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Model;
+namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 class Feedback extends Model
 {
     protected $fillable = ['email', 'message'];
+
 }

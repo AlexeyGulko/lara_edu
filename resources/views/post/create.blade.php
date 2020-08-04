@@ -1,4 +1,4 @@
-@extends('layout.master')
+@extends('layout.without_sidebar')
 @section('title', 'Написать пост')
 @section('content')
 <div class="container mb-4">

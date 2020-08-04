@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StorePost extends FormRequest
 {
@@ -25,10 +26,14 @@ class StorePost extends FormRequest
     {
         return [
             'title'       => 'required|min:5|max:100',
-            'slug'        => 'required|regex:/[A-Za-z\-\_0-9]+/i|unique:posts,slug',
             'description' => 'required|max:255',
             'body'        => 'required',
             'published'   => 'present',
+            'slug'        => [
+                'required',
+                'regex:/[A-Za-z\-\_0-9]+/i',
+                Rule::unique('posts')->ignore($this->slug, 'slug'),
+                ],
         ];
     }
 

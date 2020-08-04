@@ -16,6 +16,8 @@ class PostController extends Controller
 {
 
     /**
+     * return latest posts
+     *
      * @return Application|Factory|View
      */
     public function index()
@@ -25,6 +27,8 @@ class PostController extends Controller
     }
 
     /**
+     * create form
+     *
      * @return Application|Factory|View
      */
     public function create()
@@ -33,13 +37,15 @@ class PostController extends Controller
     }
 
     /**
+     * store post
+     *
      * @param StorePost $request
      * @return Application|RedirectResponse|Redirector
      */
     public function store(StorePost $request)
     {
         Post::create($request->validated());
-        return redirect('/');
+        return redirect()->route('home');
     }
 
     /**
@@ -56,33 +62,37 @@ class PostController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
-     * @return Response
+     * @param Post $post
+     * @return Application|Factory|View
      */
-    public function edit($id)
+    public function edit(Post $post)
     {
-        //
+        return view('post.edit', compact('post'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param  int  $id
-     * @return Response
+     * @param StorePost $request
+     * @param Post $post
+     * @return RedirectResponse
      */
-    public function update(Request $request, $id)
+    public function update(StorePost $request, Post $post)
     {
+        $post->update($request->validated());
+        return redirect()->route('home');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return Response
+     * @param Post $post
+     * @return RedirectResponse
+     * @throws \Exception
      */
-    public function destroy($id)
+    public function destroy(Post $post)
     {
-        //
+        $post->delete();
+        return redirect()->route('home');
     }
 }

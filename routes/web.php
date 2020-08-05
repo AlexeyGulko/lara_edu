@@ -36,3 +36,5 @@ Route::get('/about', function () {
 })
     ->name('about')
 ;
+
+Auth::routes();

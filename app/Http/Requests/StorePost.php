@@ -30,7 +30,6 @@ class StorePost extends FormRequest
             'body'        => 'required',
             'published'   => 'present',
             'tags'        => 'present',
-            'owner_id'    => 'present',
             'slug'        => [
                 'required',
                 'regex:/[A-Za-z\-\_0-9]+/i',
@@ -43,7 +42,6 @@ class StorePost extends FormRequest
     {
         $this->merge([
             'published'   => $this->boolean('published'),
-            'owner_id'    => auth()->id(),
         ]);
     }
 }

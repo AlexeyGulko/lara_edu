@@ -21,7 +21,7 @@ class PostController extends Controller
         $this->middleware('auth');
         $this
             ->middleware('can:update,post')
-            ->except(['index', 'create', 'show',])
+            ->except(['index', 'create', 'store', 'show',])
         ;
     }
 
@@ -54,7 +54,9 @@ class PostController extends Controller
      */
     public function store(StorePost $request)
     {
-        $post = Post::create($request->validated());
+        $validated = $request->validated();
+        $validated['owner_id'] = auth()->id();
+        $post = Post::create($validated);
         $post->syncTags($request->tags);
         return redirect()->route('home');
     }

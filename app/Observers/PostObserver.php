@@ -2,6 +2,9 @@
 
 namespace App\Observers;
 
+use App\Mail\PostCreated;
+use App\Mail\PostDeleted;
+use App\Mail\PostUpdated;
 use App\Post;
 
 class PostObserver
@@ -15,6 +18,8 @@ class PostObserver
     public function created(Post $post)
     {
         flashMessage('Пост создан');
+        \Mail::to(config('mail.to.admin'))
+            ->queue(new PostCreated($post));
     }
 
     /**
@@ -26,6 +31,8 @@ class PostObserver
     public function updated(Post $post)
     {
         flashMessage('Пост обновлён');
+        \Mail::to(config('mail.to.admin'))
+            ->queue(new PostUpdated($post));
     }
 
     /**
@@ -37,6 +44,8 @@ class PostObserver
     public function deleted(Post $post)
     {
         flashMessage('Пост удалён', 'warning');
+        \Mail::to(config('mail.to.admin'))
+            ->send(new PostDeleted($post));
     }
 
     /**

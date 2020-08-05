@@ -38,6 +38,9 @@ class Post extends Model
 
     public function syncTags($tags)
     {
+        if (empty($tags)) {
+            return;
+        }
         $postTags = $this->tags->keyBy('name');
         $reqTags = collect(explode(',', $tags))->keyBy( function ($item) {
             return $item;

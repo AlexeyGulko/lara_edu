@@ -12,27 +12,29 @@
             <hr>
         </div>
         <a href="{{ route('home') }}" class="btn btn-outline-primary">На главную</a>
-        <a
-            href="{{ route('posts.edit', $post) }}"
-            class="btn btn-outline-warning"
-        >
-            Редактировать
-        </a>
-        <form
-            action="{{ route('posts.destroy', $post) }}"
-            method="post"
-            class="d-inline"
-        >
-            @csrf
-            @method('delete')
-
-            <button
-                type="submit"
-                class="btn btn-outline-danger"
+        @can('update', $post)
+            <a
+                href="{{ route('posts.edit', $post) }}"
+                class="btn btn-outline-warning"
             >
-                Удалить
-            </button>
-        </form>
+                Редактировать
+            </a>
+            <form
+                action="{{ route('posts.destroy', $post) }}"
+                method="post"
+                class="d-inline"
+            >
+                @csrf
+                @method('delete')
+
+                <button
+                    type="submit"
+                    class="btn btn-outline-danger"
+                >
+                    Удалить
+                </button>
+            </form>
+        @endcan
     </div>
 @endsection
 

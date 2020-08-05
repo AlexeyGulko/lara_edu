@@ -7,7 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
-    protected $fillable = ['title', 'slug', 'description', 'published', 'body'];
+    protected $fillable = [
+        'title',
+        'slug',
+        'description',
+        'published',
+        'body',
+        'owner_id',
+    ];
 
     public function getRouteKeyName()
     {
@@ -19,8 +26,14 @@ class Post extends Model
         return $builder->where('published', true);
     }
 
-    public function tags() {
+    public function tags()
+    {
         return $this->belongsToMany(Tag::class);
+    }
+
+    public function owner()
+    {
+        return $this->belongsTo(User::class, 'owner_id');
     }
 
     public function syncTags($tags)

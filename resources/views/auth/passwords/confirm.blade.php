@@ -1,5 +1,5 @@
 @extends('layout.without_sidebar')
-
+@section('title', 'подвтердить пароль')
 @section('content')
 <div class="container">
     <div class="row justify-content-center">

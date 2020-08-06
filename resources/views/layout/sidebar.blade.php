@@ -1,7 +1,8 @@
 <aside class="col-md-4 blog-sidebar">
-    <div class="p-4 mb-3 rounded">
+    <div class="rounded">
+        <h1 class="h1">Тэги</h1>
     </div>
-
-    <div class="p-4">
+    <div>
+        @include('layout.tags', ['tags' => $tagsCloud])
     </div>
 </aside><!-- /.blog-sidebar -->

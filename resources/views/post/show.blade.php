@@ -1,22 +1,41 @@
 @extends('layout.master')
 @section('title', $post->title)
 @section('content')
-<main role="main" class="container">
-    <div class="row mb-2">
-        <div class="col-md-8">
-            <div class="blog-post">
-                <h2 class="blog-post-title">{{ $post->title }}</h2>
-                <p class="blog-post-meta">{{ $post->created_at->format('d M Y') }}</p>
-                <p></p>{{ $post->description }}</p>
-                <hr>
-                <p>{{ $post->body }}</p>
-                <hr>
-                <a href="{{ route('home') }}">На главную</a>
-            </div>
+    <div class="col-md-8">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ $post->title }}</h2>
+            @include('layout.tags', ['tags' => $post->tags])
+            <p class="blog-post-meta">{{ $post->created_at->format('d M Y') }}</p>
+            <p></p>{{ $post->description }}</p>
+            <hr>
+            <p>{{ $post->body }}</p>
+            <hr>
         </div>
-        @include('layout.sidebar')
+        <a href="{{ route('home') }}" class="btn btn-outline-primary">На главную</a>
+        @can('update', $post)
+            <a
+                href="{{ route('posts.edit', $post) }}"
+                class="btn btn-outline-warning"
+            >
+                Редактировать
+            </a>
+            <form
+                action="{{ route('posts.destroy', $post) }}"
+                method="post"
+                class="d-inline"
+            >
+                @csrf
+                @method('delete')
+
+                <button
+                    type="submit"
+                    class="btn btn-outline-danger"
+                >
+                    Удалить
+                </button>
+            </form>
+        @endcan
     </div>
-</main><!-- /.container -->
 @endsection
 
 

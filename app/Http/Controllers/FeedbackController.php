@@ -13,6 +13,14 @@ use Illuminate\View\View;
 
 class FeedbackController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this
+            ->middleware('can:administrate')
+            ->except(['create', 'store',])
+        ;
+    }
     /**
      * Display a listing of the resource.
      *

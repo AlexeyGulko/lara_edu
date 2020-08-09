@@ -54,5 +54,5 @@ class FeedbackController extends Controller
 
         return redirect('/');
     }
-    
+
 }

@@ -24,7 +24,7 @@ class StorePost extends FormRequest
      */
     public function rules()
     {
-        return [
+        $rules = [
             'title'       => 'required|min:5|max:100',
             'description' => 'required|max:255',
             'body'        => 'required',
@@ -33,9 +33,11 @@ class StorePost extends FormRequest
             'slug'        => [
                 'required',
                 'regex:/[A-Za-z\-\_0-9]+/i',
-                Rule::unique('posts')->ignore($this->slug, 'slug'),
-                ],
+                $this->uniqueSlugRule(),
+            ],
         ];
+
+        return $rules;
     }
 
     protected function prepareForValidation()
@@ -43,5 +45,12 @@ class StorePost extends FormRequest
         $this->merge([
             'published'   => $this->boolean('published'),
         ]);
+    }
+
+    private function uniqueSlugRule()
+    {
+        return $this->isMethod('put')
+            ? Rule::unique('posts')->ignore($this->slug, 'slug')
+            : Rule::unique('posts');
     }
 }

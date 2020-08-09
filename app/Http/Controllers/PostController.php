@@ -24,6 +24,14 @@ class PostController extends Controller
         ;
     }
 
+    public function redirectTo()
+    {
+        $path = request()->is('admin/*')
+            ? route('admin.posts.index')
+            : route('posts.index');
+        return redirect($path);
+    }
+
     /**
      * return latest posts
      *
@@ -57,7 +65,7 @@ class PostController extends Controller
         $validated['owner_id'] = auth()->id();
         $post = Post::create($validated);
         $post->syncTags($request->tags);
-        return redirect()->route('home');
+        return $this->redirectTo();
     }
 
     /**
@@ -93,8 +101,7 @@ class PostController extends Controller
     {
         $post->update($request->validated());
         $post->syncTags($request->tags);
-
-        return redirect()->route('home');
+        return $this->redirectTo();
     }
 
     /**
@@ -107,6 +114,6 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         $post->delete();
-        return redirect()->route('home');
+        return $this->redirectTo();
     }
 }

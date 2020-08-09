@@ -10,6 +10,10 @@ class PostPolicy
 {
     use HandlesAuthorization;
 
+    public function before(User $user)
+    {
+        return $user->isAdmin();
+    }
     /**
      * Determine whether the user can update the model.
      *

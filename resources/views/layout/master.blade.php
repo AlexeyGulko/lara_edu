@@ -2,7 +2,9 @@
 @section('master')
     <main role="main" class="container">
         @include('layout.header')
-        @include('layout.nav')
+        @section('nav')
+            @include('layout.nav')
+        @show
         @include('layout.flash_message')
         <div class="row my-4">
             @yield('content')

@@ -19,21 +19,7 @@
             >
                 Редактировать
             </a>
-            <form
-                action="{{ route('posts.destroy', $post) }}"
-                method="post"
-                class="d-inline"
-            >
-                @csrf
-                @method('delete')
-
-                <button
-                    type="submit"
-                    class="btn btn-outline-danger"
-                >
-                    Удалить
-                </button>
-            </form>
+            <x-delete-button :route="route('posts.destroy', $post)"/>
         @endcan
     </div>
 @endsection

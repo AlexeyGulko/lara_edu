@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,9 +24,7 @@ Route::get('/posts/tags/{tag}', 'TagController@index')
 
 Route::resource('posts', 'PostController');
 
-Route::get('/admin/feedback', 'FeedbackController@index')
-    ->name('admin.feedback')
-;
+
 Route::post('/feedback/create', 'FeedbackController@store')
     ->name('feedback.store')
 ;
@@ -38,3 +37,25 @@ Route::get('/about', function () {
 ;
 
 Auth::routes();
+
+Route::namespace('Admin')->group(function () {
+    Route::get('/admin', 'AdminController@index')
+        ->name('admin')
+    ;
+    Route::get('/admin/feedback', 'FeedbackController@index')
+        ->name('admin.feedback.index')
+    ;
+    Route::get('/admin/posts', 'PostController@index')
+        ->name('admin.posts.index')
+    ;
+});
+Route::name('admin.')->group(function () {
+    Route::prefix('admin')->group(function () {
+        Route::resource('posts', 'PostController')
+            ->except(['index', 'create', 'store']);
+        Route::put('/posts/{post}/publish', 'PublishController@toggle')
+            ->name('posts.publish');
+    });
+});
+
+

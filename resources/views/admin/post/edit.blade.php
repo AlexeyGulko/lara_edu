@@ -1,5 +1,5 @@
-@extends('layout.without_sidebar')
-@section('title', 'Редактировать пост')
+@extends('admin.layout.master')
+@section('title', 'Написать пост')
 @section('content')
     <x-post-form
         :action="route('admin.posts.update', $post)"

@@ -5,7 +5,7 @@
             <a class="p-2 text-muted" href="{{ route('about') }}">О нас</a>
             <a class="p-2 text-muted" href="{{ route('contacts') }}">Контакты</a>
             <a class="p-2 text-muted" href="{{ route('posts.create') }}">Создать стаью</a>
-            <a class="p-2 text-muted" href="{{ route('admin.feedback') }}">Админ</a>
+            <a class="p-2 text-muted" href="{{ route('admin') }}">Админ</a>
         </nav>
     </div>
 </div>

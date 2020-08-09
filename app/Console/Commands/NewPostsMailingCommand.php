@@ -2,9 +2,12 @@
 
 namespace App\Console\Commands;
 
+use App\Mail\RecentPosts;
 use App\Post;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Mail;
 
 class NewPostsMailingCommand extends Command
 {
@@ -13,7 +16,7 @@ class NewPostsMailingCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'mailing:post';
+    protected $signature = 'mailing:post {days}';
 
     /**
      * The console command description.
@@ -37,11 +40,13 @@ class NewPostsMailingCommand extends Command
      */
     public function handle()
     {
-        $days = $this->ask('Days ');
+        $days = $this->argument('days');
         $date = Carbon::now()->subDay($days);
         $posts = Post::where('created_at', '>', $date)
             ->published()
             ->latest()
             ->get();
+        Mail::to(User::all())
+            ->queue(new RecentPosts($posts, $days));
     }
 }

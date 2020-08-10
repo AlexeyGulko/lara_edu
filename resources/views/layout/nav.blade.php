@@ -6,7 +6,7 @@
             <a class="p-2 text-muted" href="{{ route('contacts') }}">Контакты</a>
             <a class="p-2 text-muted" href="{{ route('posts.create') }}">Создать стаью</a>
             @can('administrate')
-                <a class="p-2 text-muted" href="{{ route('admin') }}">Админ</a>
+                <a class="p-2 text-muted" href="{{ route('admin.index') }}">Админ</a>
             @endcan
         </nav>
     </div>

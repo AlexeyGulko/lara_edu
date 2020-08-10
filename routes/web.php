@@ -38,24 +38,16 @@ Route::get('/about', function () {
 
 Auth::routes();
 
-Route::namespace('Admin')->group(function () {
-    Route::get('/admin', 'AdminController@index')
-        ->name('admin')
-    ;
-    Route::get('/admin/feedback', 'FeedbackController@index')
-        ->name('admin.feedback.index')
-    ;
-    Route::get('/admin/posts', 'PostController@index')
-        ->name('admin.posts.index')
-    ;
-});
-Route::name('admin.')->group(function () {
-    Route::prefix('admin')->group(function () {
-        Route::resource('posts', 'PostController')
-            ->except(['index', 'create', 'store']);
+Route::group(['prefix'  => 'admin', 'as' => 'admin.'], function () {
+        Route::get('/', 'Admin\AdminController@index')
+            ->name('index');
+        Route::get('feedback', 'FeedbackController@index')
+            ->name('feedback.index');
+        Route::resource('posts', 'Admin\PostController')
+            ->except(['create', 'store']);
         Route::put('/posts/{post}/publish', 'PublishController@toggle')
-            ->name('posts.publish');
-    });
+        ->name('posts.publish');
 });
+
 
 

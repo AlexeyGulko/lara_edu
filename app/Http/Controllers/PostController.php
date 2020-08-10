@@ -64,7 +64,8 @@ class PostController extends Controller
         $validated = $request->validated();
         $validated['owner_id'] = auth()->id();
         $post = Post::create($validated);
-        $post->syncTags($request->tags);
+        empty($request->tags)
+            ?: $post->syncTags($request->tags);
         return $this->redirectTo();
     }
 
@@ -100,7 +101,8 @@ class PostController extends Controller
     public function update(StorePost $request, Post $post)
     {
         $post->update($request->validated());
-        $post->syncTags($request->tags);
+        empty($request->tags)
+            ?: $post->syncTags($request->tags);
         return $this->redirectTo();
     }
 

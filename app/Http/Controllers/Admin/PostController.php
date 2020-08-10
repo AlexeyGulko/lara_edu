@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Http\Controllers\PostController as PostResourceController;
-use App\Http\Requests\StorePost;
 use App\Post;
 use Illuminate\Contracts\Support\Renderable;
-use Illuminate\Http\RedirectResponse;
 
 class PostController extends PostResourceController
 {
@@ -19,7 +16,7 @@ class PostController extends PostResourceController
 
     public function redirectTo()
     {
-        return redirect()->route('admin.posts');
+        return redirect()->route('admin.posts.index');
     }
 
     /**
@@ -33,8 +30,8 @@ class PostController extends PostResourceController
         return view('admin.post.index', compact('posts'));
     }
 
-//    public function edit(Post $post)
-//    {
-//        return view('admin.post.edit', compact('post'));
-//    }
+    public function edit(Post $post)
+    {
+        return view('admin.post.edit', compact('post'));
+    }
 }

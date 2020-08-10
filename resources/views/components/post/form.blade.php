@@ -79,7 +79,7 @@
                         id="tags"
                         name="tags"
                         placeholder="Введите тэги черезе запятую"
-                        value="{{ old('tags') }}"
+                        value="{{ old('tags', $post->tags->implode('name', ',') ?? '') }}"
                     >
                     @error('description')
                     <div class="invalid-feedback">

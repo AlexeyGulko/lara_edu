@@ -24,7 +24,6 @@ class PostController extends Controller
 
     public function redirectTo()
     {
-        dump(request()->url(), request()->is('/admin/*'));
         $path = request()->is('admin/*')
             ? route('admin.posts.index')
             : route('posts.index');

@@ -16,7 +16,6 @@ class PostDeleteButton extends Component
      */
     public function __construct(Post $post)
     {
-        dump($post);
         $this->route = $this->createRoute($post);
     }
 

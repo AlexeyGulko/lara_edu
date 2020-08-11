@@ -26,16 +26,6 @@ class NewPostsMailingCommand extends Command
     protected $description = 'Send mail to all users, with published posts, from now to some days ago';
 
     /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    /**
      * Execute the console command.
      */
     public function handle()

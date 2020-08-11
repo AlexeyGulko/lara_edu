@@ -30,7 +30,6 @@ class CreateRoleUserTable extends Migration
                 ->on('users')
                 ->onDelete('cascade')
             ;
-
         });
     }
 

@@ -2,17 +2,18 @@
 
 use App\Role;
 use App\User;
-use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-class AdminSeeder extends Seeder
+class CreateAdmin extends Migration
 {
     /**
-     * Run the database seeds.
+     * Run the migrations.
      *
      * @return void
      */
-    public function run()
+    public function up()
     {
         Role::create([
             'name' => 'admin'
@@ -24,5 +25,15 @@ class AdminSeeder extends Seeder
         ])
             ->roles()
             ->attach(1);
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('admin');
     }
 }

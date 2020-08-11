@@ -13,7 +13,6 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             UsersWithPostsSeeder::class,
-            AdminSeeder::class,
         ]);
     }
 }

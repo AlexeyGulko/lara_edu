@@ -19,19 +19,18 @@ class UsersWithPostsSeeder extends Seeder
             ->make();
 
         $users = factory(User::class, 2)
-            ->create()
-            ->each(function (User $user) use ($faker) {
-                $user->posts()->saveMany(factory(Post::class, rand(10, 15))
-                    ->make(['owner_id' => '']));
-            });
+            ->create();
 
-        foreach ($users as $user) {
-            $user->posts->each(function (Post $post) use ($tags, $faker) {
-                $randomTags = $faker->randomElements(
-                    $tags->shuffle()->pluck('name')->all(), rand(1, $tags->count())
-                );
-                $post->syncTags($randomTags);
-            });
+        Post::unsetEventDispatcher();
+
+        for($i = 1; $i <= 20; $i++) {
+            $randomTags = $faker->randomElements(
+                $tags->shuffle()->pluck('name')->all(), rand(1, $tags->count())
+            );
+            factory(Post::class)
+                ->create(['owner_id' => $faker->randomElement($users->pluck('id')->all())])
+                ->syncTags($randomTags)
+            ;
         }
     }
 }

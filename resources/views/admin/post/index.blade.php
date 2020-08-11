@@ -47,8 +47,8 @@
                         </form>
                     </td>
                     <td>
-                        <x-delete-button
-                            :route="route('admin.posts.destroy', $post)"
+                        <x-post-delete-button
+                            :post="$post"
                         />
                     </td>
                 </tr>

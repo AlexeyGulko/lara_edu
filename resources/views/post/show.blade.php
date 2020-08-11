@@ -19,7 +19,7 @@
             >
                 Редактировать
             </a>
-            <x-delete-button :route="route('posts.destroy', $post)"/>
+            <x-post-delete-button :post="$post"/>
         @endcan
     </div>
 @endsection

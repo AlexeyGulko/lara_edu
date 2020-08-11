@@ -14,11 +14,6 @@ class PostController extends PostResourceController
         $this->middleware('can:administrate');
     }
 
-    public function redirectTo()
-    {
-        return redirect()->route('admin.posts.index');
-    }
-
     /**
      * return latest posts
      *

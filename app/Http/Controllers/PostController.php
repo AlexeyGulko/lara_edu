@@ -4,12 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePost;
 use App\Post;
-use App\Tag;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Routing\Redirector;
 use Illuminate\View\View;
 
@@ -23,6 +20,14 @@ class PostController extends Controller
             ->middleware('can:update,post')
             ->except(['index', 'create', 'store', 'show',])
         ;
+    }
+
+    public function redirectTo()
+    {
+        $path = request()->is('admin/*')
+            ? route('admin.posts.index')
+            : route('posts.index');
+        return redirect($path);
     }
 
     /**
@@ -57,8 +62,9 @@ class PostController extends Controller
         $validated = $request->validated();
         $validated['owner_id'] = auth()->id();
         $post = Post::create($validated);
-        $post->syncTags($request->tags);
-        return redirect()->route('home');
+        empty($request->tags)
+            ?: $post->syncTags($request->tags);
+        return $this->redirectTo();
     }
 
     /**
@@ -93,9 +99,9 @@ class PostController extends Controller
     public function update(StorePost $request, Post $post)
     {
         $post->update($request->validated());
-        $post->syncTags($request->tags);
-
-        return redirect()->route('home');
+        empty($request->tags)
+            ?: $post->syncTags($request->tags);
+        return $this->redirectTo();
     }
 
     /**
@@ -108,6 +114,6 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         $post->delete();
-        return redirect()->route('home');
+        return $this->redirectTo();
     }
 }

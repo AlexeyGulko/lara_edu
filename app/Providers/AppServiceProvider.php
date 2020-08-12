@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
+use App\Service\Webpushr;
 use App\View\Components\post\Form;
-use Blade;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -15,7 +15,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->singleton(Webpushr::class, function () {
+            return new Webpushr(
+                config('app.webpushr.apiKey'),
+                config('app.webpushr.authToken')
+            );
+        });
     }
 
     /**
@@ -25,6 +30,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Blade::component('post-form', Form::class);
+        //
     }
 }

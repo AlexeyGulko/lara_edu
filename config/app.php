@@ -228,7 +228,10 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-
     ],
 
+    'webpushr' => [
+        'apiKey'    => env('WEBPUSHR_API_KEY'),
+        'authToken' => env('WEBPUSHR_AUTH_TOKEN'),
+    ],
 ];

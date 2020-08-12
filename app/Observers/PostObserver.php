@@ -6,9 +6,17 @@ use App\Mail\PostCreated;
 use App\Mail\PostDeleted;
 use App\Mail\PostUpdated;
 use App\Post;
+use App\Service\Webpushr;
 
 class PostObserver
 {
+    protected $webpushr;
+
+    public function __construct(Webpushr $webpushr)
+    {
+        $this->webpushr = $webpushr;
+    }
+
     /**
      * Handle the post "created" event.
      *
@@ -18,6 +26,7 @@ class PostObserver
     public function created(Post $post)
     {
         flashMessage('Пост создан');
+        $this->webpushr->send($post->title, $post->description);
         \Mail::to(config('mail.to.admin'))
             ->queue(new PostCreated($post));
     }

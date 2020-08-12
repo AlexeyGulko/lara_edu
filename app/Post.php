@@ -38,13 +38,8 @@ class Post extends Model
 
     public function syncTags($tags)
     {
-        if (empty($tags)) {
-            return;
-        }
         $postTags = $this->tags->keyBy('name');
-        $reqTags = collect(explode(',', $tags))->keyBy( function ($item) {
-            return $item;
-        });
+        $reqTags = $this->formatRequestTags($tags);
         $syncIds = $postTags->intersectByKeys($reqTags)->pluck('id')->toArray();
         $syncTags = $reqTags->diffKeys($tags);
         foreach ($syncTags as $tag) {
@@ -53,4 +48,17 @@ class Post extends Model
         }
         $this->tags()->sync($syncIds);
     }
+
+    private function formatRequestTags($tags)
+    {
+        if (is_string($tags)) {
+            $tags = explode(',', $tags);
+        }
+        return collect($tags)->keyBy( function ($item) {
+            return $item;
+        });
+    }
+
+
+
 }

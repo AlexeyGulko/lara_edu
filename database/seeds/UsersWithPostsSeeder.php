@@ -1,5 +1,6 @@
 <?php
 
+use App\Comment;
 use App\NewsItem;
 use App\Post;
 use App\Tag;
@@ -36,7 +37,7 @@ class UsersWithPostsSeeder extends Seeder
             $post->syncTags($randomTags);
             $post
                 ->comments()
-                ->saveMany(factory(\App\Comment::class, rand(1, 10))
+                ->saveMany(factory(Comment::class, rand(1, 10))
                     ->make([
                         'owner_id' => $randomUser,
                         'commentable_type' => '',
@@ -50,7 +51,7 @@ class UsersWithPostsSeeder extends Seeder
             $news->syncTags($randomTags);
             $news
                 ->comments()
-                ->saveMany(factory(\App\Comment::class, rand(1, 10))
+                ->saveMany(factory(Comment::class, rand(1, 10))
                     ->make([
                         'owner_id' => $randomUser,
                         'commentable_type' => '',

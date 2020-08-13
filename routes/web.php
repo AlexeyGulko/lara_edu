@@ -59,3 +59,10 @@ Route::group(['prefix'  => 'admin', 'as' => 'admin.', 'namespace' => 'Admin'], f
 
 Route::get('/news', 'NewsController@index')->name('news.index');
 Route::get('/news/{news}', 'NewsController@show')->name('news.show');
+
+Route::post('/news/{news}/comment', 'CommentController@store')
+    ->name('news.comments.store')
+;
+Route::post('/posts/{post}/comment', 'CommentController@store')
+    ->name('posts.comments.store')
+;

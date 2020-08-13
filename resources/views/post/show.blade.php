@@ -21,6 +21,9 @@
             </a>
             <x-delete-button :item="$post"/>
         @endcan
+        <hr>
+        <x-comment-form :object="$post"></x-comment-form>
+        <x-comments :item="$post"></x-comments>
     </div>
 @endsection
 

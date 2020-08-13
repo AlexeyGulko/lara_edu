@@ -11,11 +11,10 @@ $factory->define(Comment::class, function (Faker $faker) {
         App\NewsItem::class,
     ];
     $commentableType = $faker->randomElement($commentable);
-    $commentable = factory($commentableType)->create();
     return [
         'body' => $faker->sentence,
         'owner_id' => factory(\App\User::class),
         'commentable_type' => $commentableType,
-        'commentable_id' => $commentable->id,
+        'commentable_id' => factory($commentableType)->make()->id,
     ];
 });

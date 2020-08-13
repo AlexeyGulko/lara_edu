@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Comment;
 use App\NewsItem;
+use App\Observers\CommentObserver;
 use App\Observers\NewsObserver;
 use App\Observers\PostObserver;
 use App\Post;
@@ -35,6 +37,7 @@ class EventServiceProvider extends ServiceProvider
 
         Post::observe(PostObserver::class);
         NewsItem::observe(NewsObserver::class);
+        Comment::observe(CommentObserver::class);
     }
 
     /**

@@ -12,6 +12,8 @@
             <hr>
         </div>
         <a href="{{ route('news.index') }}" class="btn btn-outline-primary">К новостям</a>
+        <hr>
+        <x-comments :item="$news"></x-comments>
     </div>
 @endsection
 

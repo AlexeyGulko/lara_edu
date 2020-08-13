@@ -28,14 +28,35 @@ class UsersWithPostsSeeder extends Seeder
             $randomTags = $faker->randomElements(
                 $tags->shuffle()->pluck('name')->all(), rand(1, $tags->count())
             );
-            factory(Post::class)
-                ->create(['owner_id' => $faker->randomElement($users->pluck('id')->all())])
-                ->syncTags($randomTags)
+            $randomUser = $faker->randomElement($users->pluck('id')->all());
+
+            $post = factory(Post::class)
+                ->create(['owner_id' => $randomUser])
             ;
-            factory(NewsItem::class)
+            $post->syncTags($randomTags);
+            $post
+                ->comments()
+                ->saveMany(factory(\App\Comment::class, rand(1, 10))
+                    ->make([
+                        'owner_id' => $randomUser,
+                        'commentable_type' => '',
+                        'commentable_id' => '',
+                    ])
+                );
+
+            $news = factory(NewsItem::class)
                 ->create(['owner_id' => 1])
-                ->syncTags($randomTags)
             ;
+            $news->syncTags($randomTags);
+            $news
+                ->comments()
+                ->saveMany(factory(\App\Comment::class, rand(1, 10))
+                    ->make([
+                        'owner_id' => $randomUser,
+                        'commentable_type' => '',
+                        'commentable_id' => '',
+                    ])
+                );
         }
     }
 }

@@ -19,9 +19,9 @@ class Post extends Model
         'owner_id',
     ];
 
-    protected $casts = [
-      'published' => 'boolean',
-    ];
+    protected $casts = ['published' => 'boolean',];
+
+    protected $with = ['comments',];
 
     protected static function booted()
     {
@@ -36,5 +36,10 @@ class Post extends Model
     public function owner()
     {
         return $this->belongsTo(User::class, 'owner_id');
+    }
+
+    public function comments()
+    {
+        return $this->morphMany(Comment::class, 'commentable');
     }
 }

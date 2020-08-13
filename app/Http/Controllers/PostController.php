@@ -23,11 +23,8 @@ class PostController extends Controller
     }
 
     public function redirectTo()
-    {
-        $path = request()->is('admin/*')
-            ? route('admin.posts.index')
-            : route('posts.index');
-        return redirect($path);
+    {;
+        return redirect()->route('posts.index');
     }
 
     /**
@@ -37,8 +34,8 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::published()->with('tags')->latest()->get();
-        return view('index', compact('posts'));
+        $posts = Post::with('tags')->latest()->get();
+        return view('post.index', compact('posts'));
     }
 
     /**

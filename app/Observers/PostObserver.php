@@ -56,26 +56,4 @@ class PostObserver
         \Mail::to(config('mail.to.admin'))
             ->send(new PostDeleted($post));
     }
-
-    /**
-     * Handle the post "restored" event.
-     *
-     * @param  \App\Post  $post
-     * @return void
-     */
-    public function restored(Post $post)
-    {
-        //
-    }
-
-    /**
-     * Handle the post "force deleted" event.
-     *
-     * @param  \App\Post  $post
-     * @return void
-     */
-    public function forceDeleted(Post $post)
-    {
-        //
-    }
 }

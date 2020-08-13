@@ -16,7 +16,7 @@
                         id="title"
                         name="title"
                         placeholder="Название статьи"
-                        value="{{ old('title', $post->title ?? '') }}"
+                        value="{{ old('title', $item->title ?? '') }}"
                     >
                     @error('title')
                     <div class="invalid-feedback">
@@ -32,7 +32,7 @@
                         id="slug"
                         name="slug"
                         placeholder="Символьный код"
-                        value="{{ old('slug', $post->slug ?? '') }}"
+                        value="{{ old('slug', $item->slug ?? '') }}"
                     >
                     @error('slug')
                     <div class="invalid-feedback">
@@ -48,7 +48,7 @@
                         id="description"
                         name="description"
                         placeholder="Краткое описание"
-                        value="{{ old('description', $post->description ?? '') }}"
+                        value="{{ old('description', $item->description ?? '') }}"
                     >
                     @error('description')
                     <div class="invalid-feedback">
@@ -64,7 +64,7 @@
                         name="body"
                         rows="5"
                         placeholder="Текст статьи"
-                    >{{ old('body', $post->body ?? '') }}</textarea>
+                    >{{ old('body', $item->body ?? '') }}</textarea>
                     @error('body')
                     <div class="invalid-feedback">
                         {{ $message }}
@@ -79,7 +79,7 @@
                         id="tags"
                         name="tags"
                         placeholder="Введите тэги черезе запятую"
-                        value="{{ old('tags', $post->tags->implode('name', ',') ?? '') }}"
+                        value="{{ old('tags', $item->tags_as_string ?? '') }}"
                     >
                     @error('description')
                     <div class="invalid-feedback">
@@ -93,7 +93,7 @@
                         class="form-check-input"
                         id="publish"
                         name="published"
-                        {{ ! old('published', $post->published ?? '') ?: 'checked'}}
+                        {{ ! old('published', $item->published ?? '') ?: 'checked'}}
                     >
                     <label class="form-check-label" for="publish">Опубликовать?</label>
                 </div>

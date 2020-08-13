@@ -7,7 +7,7 @@ use Illuminate\View\Component;
 
 class Form extends Component
 {
-    public $post;
+    public $item;
     public $method;
     public $action;
     /**
@@ -15,11 +15,11 @@ class Form extends Component
      *
      * @return void
      */
-    public function __construct($action, Post $post, $method = 'post')
+    public function __construct($action, $item = null, $method = 'post')
     {
         $this->action = $action;
         $this->method = $method;
-        $this->post = $post;
+        $this->item = $item;
     }
 
     /**

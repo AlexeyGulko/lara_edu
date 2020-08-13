@@ -36,11 +36,11 @@ Route::get('/about', function () {
 
 Auth::routes();
 
-Route::group(['prefix'  => 'admin', 'as' => 'admin.'], function () {
-    Route::get('/', 'Admin\AdminController@index')
+Route::group(['prefix'  => 'admin', 'as' => 'admin.', 'namespace' => 'Admin'], function () {
+    Route::get('/', 'AdminController@index')
         ->name('index')
     ;
-    Route::resource('posts', 'Admin\PostController')
+    Route::resource('posts', 'PostController')
         ->except(['create', 'store'])
     ;
     Route::get('feedback', 'FeedbackController@index')
@@ -49,4 +49,13 @@ Route::group(['prefix'  => 'admin', 'as' => 'admin.'], function () {
     Route::put('/posts/{post}/publish', 'PublishController@toggle')
         ->name('posts.publish')
     ;
+    Route::put('/news/{news}/publish', 'PublishController@toggle')
+        ->name('news.publish')
+    ;
+    Route::resource('news', 'NewsController')
+        ->except('show')
+    ;
 });
+
+Route::get('/news', 'NewsController@index')->name('news.index');
+Route::get('/news/{news}', 'NewsController@show')->name('news.show');

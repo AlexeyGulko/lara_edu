@@ -1,5 +1,6 @@
 <?php
 
+use App\NewsItem;
 use App\Post;
 use App\Tag;
 use App\User;
@@ -29,6 +30,10 @@ class UsersWithPostsSeeder extends Seeder
             );
             factory(Post::class)
                 ->create(['owner_id' => $faker->randomElement($users->pluck('id')->all())])
+                ->syncTags($randomTags)
+            ;
+            factory(NewsItem::class)
+                ->create(['owner_id' => 1])
                 ->syncTags($randomTags)
             ;
         }

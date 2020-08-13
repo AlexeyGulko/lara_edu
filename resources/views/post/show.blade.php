@@ -6,7 +6,7 @@
             <h2 class="blog-post-title">{{ $post->title }}</h2>
             @include('layout.tags', ['tags' => $post->tags])
             <p class="blog-post-meta">{{ $post->created_at->format('d M Y') }}</p>
-            <p></p>{{ $post->description }}</p>
+            <p>{{ $post->description }}</p>
             <hr>
             <p>{{ $post->body }}</p>
             <hr>
@@ -19,7 +19,7 @@
             >
                 Редактировать
             </a>
-            <x-post-delete-button :post="$post"/>
+            <x-delete-button :item="$post"/>
         @endcan
     </div>
 @endsection

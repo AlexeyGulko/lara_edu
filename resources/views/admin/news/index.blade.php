@@ -2,6 +2,12 @@
 @section('title', 'Статьи')
 @section('content')
     <div class="col">
+        <a
+            class="btn btn-outline-primary mb-4"
+            href="{{ route('admin.news.create') }}"
+        >
+            Написать новость
+        </a>
         <table class="table">
             <thead>
             <tr>
@@ -14,21 +20,21 @@
             </tr>
             </thead>
             <tbody>
-            @foreach($posts as $post)
+            @foreach($news as $item)
                 <tr>
                     <th scope="row">{{ $loop->iteration }}</th>
                     <td>
                         <a
-                            href="{{ route('admin.posts.edit', $post) }}"
+                            href="{{ route('admin.news.edit', $item) }}"
                         >
-                            {{ $post->title }}
+                            {{ $item->title }}
                         </a>
                     </td>
-                    <td>{{ $post->owner->name }}</td>
-                    <td>{{ $post->created_at->format('d M Y') }}</td>
+                    <td>{{ $item->owner->name }}</td>
+                    <td>{{ $item->created_at->format('d M Y') }}</td>
                     <td>
                         <form
-                            action="{{ route('admin.posts.publish', $post) }}"
+                            action="{{ route('admin.news.publish', $item) }}"
                             method="POST"
                         >
                             @csrf
@@ -38,7 +44,7 @@
                                     type="checkbox"
                                     class="form-check-input"
                                     name="published"
-                                    @if($post->published )
+                                    @if($item->published )
                                     checked
                                     @endif
                                     onchange="this.form.submit()"
@@ -47,9 +53,7 @@
                         </form>
                     </td>
                     <td>
-                        <x-delete-button
-                            :item="$post"
-                        />
+                        <x-delete-button :item="$item"></x-delete-button>
                     </td>
                 </tr>
             @endforeach

@@ -66,3 +66,5 @@ Route::post('/news/{news}/comment', 'CommentController@store')
 Route::post('/posts/{post}/comment', 'CommentController@store')
     ->name('posts.comments.store')
 ;
+
+Route::get('/statistic', 'StatisticController@index')->name('statistic');

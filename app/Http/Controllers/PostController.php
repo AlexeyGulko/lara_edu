@@ -23,7 +23,7 @@ class PostController extends Controller
     }
 
     public function redirectTo()
-    {;
+    {
         return redirect()->route('posts.index');
     }
 

@@ -7,6 +7,7 @@ use App\Mail\PostDeleted;
 use App\Mail\PostUpdated;
 use App\Post;
 use App\Service\Webpushr;
+use Illuminate\Support\Arr;
 
 class PostObserver
 {
@@ -39,6 +40,7 @@ class PostObserver
      */
     public function updated(Post $post)
     {
+        $post->saveHistory();
         flashMessage('Пост обновлён');
         \Mail::to(config('mail.to.admin'))
             ->queue(new PostUpdated($post));

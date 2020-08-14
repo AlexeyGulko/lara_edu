@@ -12,11 +12,11 @@ class CommentController extends Controller
     {
         $this->middleware('auth');
     }
+
     /**
      * @param Post|NewsItem
      * @return \Illuminate\Http\RedirectResponse
      */
-
     public function store($object, Request $request)
     {
         $validated = $request->validate(['body' => 'required',]);

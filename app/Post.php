@@ -5,6 +5,7 @@ namespace App;
 use App\Scopes\PublishedScope;
 use App\Traits\HasTags;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 
 class Post extends Model
 {
@@ -41,5 +42,21 @@ class Post extends Model
     public function comments()
     {
         return $this->morphMany(Comment::class, 'commentable');
+    }
+
+    public function history()
+    {
+        return $this->hasMany(PostHistory::class);
+    }
+
+    public function saveHistory()
+    {
+        $this->history()->create(
+            [
+                'user_id'   => auth()->id(),
+                'before'    => Arr::except($this->getOriginal(), ['created_at', 'updated_at']),
+                'after'     => Arr::except($this->getDirty(), ['updated_at']),
+            ]
+        );
     }
 }

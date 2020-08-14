@@ -59,4 +59,9 @@ class User extends Authenticatable
             ->where('name', 'admin')
             ->exists();
     }
+
+    public function history()
+    {
+        return $this->hasMany(PostHistory::class);
+    }
 }

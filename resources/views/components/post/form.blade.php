@@ -99,6 +99,10 @@
                 </div>
                 <button type="submit" class="btn btn-primary">Сохранить</button>
             </form>
+            <hr>
+            @if(request()->is('*posts/*/edit'))
+                <x-history :object="$item"></x-history>
+            @endif
         </div>
     </div>
 </div>

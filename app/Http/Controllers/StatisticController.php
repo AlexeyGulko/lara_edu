@@ -25,15 +25,20 @@ class StatisticController extends Controller
                 DB::table('posts')
                     ->selectRaw('slug, title, length(body) as length')
                     ->orderBy('length', 'desc')
+                    ->where('published', true)
                     ->first(),
             'shortest_post' =>
                 DB::table('posts')
                     ->selectRaw('slug, title, length(body) as length')
                     ->orderBy('length', 'asc')
+                    ->where('published', true)
                     ->first(),
             'most_unstable_post'    =>
                 DB::table('post_histories as h')
-                    ->join('posts', 'h.post_id', 'posts.id')
+                    ->join('posts', function ($join) {
+                        $join->on('h.post_id', 'posts.id')
+                            ->where('posts.published', true);
+                    })
                     ->selectRaw('posts.slug as slug, posts.title as title, count(*) as count')
                     ->groupBy('posts.slug')
                     ->orderBy('count', 'desc')
@@ -42,7 +47,8 @@ class StatisticController extends Controller
                 DB::table('comments as c')
                     ->join('posts', function($join) {
                         $join->on('c.commentable_id', 'posts.id')
-                            ->where('c.commentable_type', Post::class);
+                            ->where('c.commentable_type', Post::class)
+                            ->where('posts.published', true);
                     })
                     ->selectRaw('posts.slug as slug, posts.title as title, count(*) as comments_count')
                     ->groupBy('posts.slug')

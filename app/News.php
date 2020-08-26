@@ -2,13 +2,24 @@
 
 namespace App;
 
+use App\Interfaces\CanBeCommented;
+use App\Interfaces\CanBeDeleted;
+use App\Interfaces\CanBePublished;
 use App\Scopes\PublishedScope;
+use App\Traits\DeleteRoute;
+use App\Traits\HasComments;
 use App\Traits\HasTags;
+use App\Traits\Publish;
 use Illuminate\Database\Eloquent\Model;
 
-class NewsItem extends Model
+class News extends Model implements CanBeCommented, CanBeDeleted, CanBePublished
 {
-    use HasTags;
+    use HasTags,
+        HasComments,
+        DeleteRoute,
+        Publish;
+
+    protected $table = 'news';
 
     protected $fillable = [
         'title',
@@ -36,10 +47,5 @@ class NewsItem extends Model
     public function owner()
     {
         return $this->belongsTo(User::class, 'owner_id');
-    }
-
-    public function comments()
-    {
-        return $this->morphMany(Comment::class, 'commentable');
     }
 }

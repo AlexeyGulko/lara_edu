@@ -2,21 +2,23 @@
 
 namespace App\View\Components;
 
-use App\Interfaces\CanBeDeleted;
+use App\Interfaces\CanBePublished;
 use Illuminate\View\Component;
 
-class DeleteButton extends Component
+class PublishCheckbox extends Component
 {
-    public $route;
+    public $action;
+    public $item;
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct(CanBeDeleted $item)
+    public function __construct(CanBePublished $item)
     {
-        $this->route = $item->deleteRoute();
+        $this->item = $item;
+        $this->action = $item->publishRoute();
     }
 
     /**
@@ -26,6 +28,6 @@ class DeleteButton extends Component
      */
     public function render()
     {
-        return view('components.delete-button');
+        return view('components.publish-checkbox');
     }
 }

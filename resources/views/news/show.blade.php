@@ -13,6 +13,7 @@
         </div>
         <a href="{{ route('news.index') }}" class="btn btn-outline-primary">К новостям</a>
         <hr>
+        <x-comment-form :object="$news"></x-comment-form>
         <x-comments :item="$news"></x-comments>
     </div>
 @endsection

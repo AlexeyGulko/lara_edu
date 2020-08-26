@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\NewsItem;
+use App\News;
 use App\Post;
 use Illuminate\Http\Request;
 
@@ -14,7 +14,7 @@ class CommentController extends Controller
     }
 
     /**
-     * @param Post|NewsItem
+     * @param Post|News
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store($object, Request $request)

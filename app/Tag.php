@@ -16,7 +16,7 @@ class Tag extends Model
 
     public function news()
     {
-        return $this->morphedByMany(NewsItem::class, 'taggable');
+        return $this->morphedByMany(News::class, 'taggable');
     }
 
     public function getRouteKeyName()

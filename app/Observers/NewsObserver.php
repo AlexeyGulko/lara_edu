@@ -2,17 +2,17 @@
 
 namespace App\Observers;
 
-use App\NewsItem;
+use App\News;
 
 class NewsObserver
 {
     /**
      * Handle the news item "created" event.
      *
-     * @param  \App\NewsItem  $newsItem
+     * @param  \App\News  $newsItem
      * @return void
      */
-    public function created(NewsItem $newsItem)
+    public function created(News $newsItem)
     {
         flashMessage('Новость создана');
     }
@@ -20,10 +20,10 @@ class NewsObserver
     /**
      * Handle the news item "updated" event.
      *
-     * @param  \App\NewsItem  $newsItem
+     * @param  \App\News  $newsItem
      * @return void
      */
-    public function updated(NewsItem $newsItem)
+    public function updated(News $newsItem)
     {
         flashMessage('Новость обновлена');
     }
@@ -31,10 +31,10 @@ class NewsObserver
     /**
      * Handle the news item "deleted" event.
      *
-     * @param  \App\NewsItem  $newsItem
+     * @param  \App\News  $newsItem
      * @return void
      */
-    public function deleted(NewsItem $newsItem)
+    public function deleted(News $newsItem)
     {
         flashMessage('Новость удалена', 'warning');
     }

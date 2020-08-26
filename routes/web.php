@@ -46,19 +46,18 @@ Route::group(['prefix'  => 'admin', 'as' => 'admin.', 'namespace' => 'Admin'], f
     Route::get('feedback', 'FeedbackController@index')
         ->name('feedback.index')
     ;
+    Route::resource('news', 'NewsController')
+        ->except('show')
+    ;
     Route::put('/posts/{post}/publish', 'PublishController@toggle')
         ->name('posts.publish')
     ;
     Route::put('/news/{news}/publish', 'PublishController@toggle')
         ->name('news.publish')
     ;
-    Route::resource('news', 'NewsController')
-        ->except('show')
-    ;
 });
 
-Route::get('/news', 'NewsController@index')->name('news.index');
-Route::get('/news/{news}', 'NewsController@show')->name('news.show');
+Route::resource('news','NewsController')->only('index', 'show');
 
 Route::post('/news/{news}/comment', 'CommentController@store')
     ->name('news.comments.store')
@@ -66,5 +65,4 @@ Route::post('/news/{news}/comment', 'CommentController@store')
 Route::post('/posts/{post}/comment', 'CommentController@store')
     ->name('posts.comments.store')
 ;
-
 Route::get('/statistic', 'StatisticController@index')->name('statistic');

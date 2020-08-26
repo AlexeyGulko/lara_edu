@@ -33,24 +33,7 @@
                     <td>{{ $item->owner->name }}</td>
                     <td>{{ $item->created_at->format('d M Y') }}</td>
                     <td>
-                        <form
-                            action="{{ route('admin.news.publish', $item) }}"
-                            method="POST"
-                        >
-                            @csrf
-                            @method('PUT')
-                            <div class="form-check">
-                                <input
-                                    type="checkbox"
-                                    class="form-check-input"
-                                    name="published"
-                                    @if($item->published )
-                                    checked
-                                    @endif
-                                    onchange="this.form.submit()"
-                                >
-                            </div>
-                        </form>
+                        <x-publish-checkbox :item="$item"></x-publish-checkbox>
                     </td>
                     <td>
                         <x-delete-button :item="$item"></x-delete-button>

@@ -2,8 +2,7 @@
 
 namespace App\View\Components;
 
-use App\NewsItem;
-use App\Post;
+use App\Interfaces\CanBeCommented;
 use Illuminate\View\Component;
 
 class CommentForm extends Component
@@ -12,20 +11,11 @@ class CommentForm extends Component
     /**
      * Create a new component instance.
      *
-     * @param $object
+     * @param CanBeCommented $object
      */
-    public function __construct($object)
+    public function __construct(CanBeCommented $object)
     {
-        $this->action = $this->choseAction($object);
-    }
-
-    protected function choseAction($object)
-    {
-        if ($object instanceof Post) {
-            return route('posts.comments.store', $object);
-        } elseif ($object instanceof NewsItem) {
-            return route('news.comments.store', $object);
-        }
+        $this->action = $object->commentStoreRoute();
     }
 
     /**

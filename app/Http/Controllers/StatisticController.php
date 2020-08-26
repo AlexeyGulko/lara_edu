@@ -13,7 +13,7 @@ class StatisticController extends Controller
     {
         $statistics = [
             'posts_quantity' => DB::table('posts')->count(),
-            'news_quantity' => DB::table('news_items')->count(),
+            'news_quantity' => DB::table('news')->count(),
             'user_with_the_most_posts'    =>
                 DB::table('posts')
                     ->join('users', 'posts.owner_id', 'users.id')

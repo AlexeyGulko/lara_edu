@@ -20,6 +20,9 @@ trait HasTags
 
     public function syncTags($tags)
     {
+        if (empty($tags)) {
+            return;
+        }
         $modelTags = $this->tags->keyBy('name');
         $reqTags = $this->formatRequestTags($tags);
         $syncIds = $modelTags->intersectByKeys($reqTags)->pluck('id')->toArray();
@@ -28,7 +31,6 @@ trait HasTags
             $tag = Tag::firstOrCreate(['name' => $tag]);
             $syncIds[] = $tag->id;
         }
-        dump($syncIds);
         $this->tags()->sync($syncIds);
     }
 

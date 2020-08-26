@@ -2,10 +2,10 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\NewsItem;
+use App\News;
 use Faker\Generator as Faker;
 
-$factory->define(NewsItem::class, function (Faker $faker) {
+$factory->define(News::class, function (Faker $faker) {
     return [
         'title'         => $faker->sentence,
         'body'          => $faker->paragraph,

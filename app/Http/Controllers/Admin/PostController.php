@@ -11,10 +11,11 @@ class PostController extends PostResourceController
 
     public function __construct()
     {
+        $this->middleware('auth');
         $this->middleware('can:administrate');
     }
 
-    public function redirectTo()
+    protected function redirectTo()
     {
         return redirect()->route('admin.posts.index');
     }

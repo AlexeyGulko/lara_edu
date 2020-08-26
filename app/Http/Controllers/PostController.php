@@ -22,7 +22,7 @@ class PostController extends Controller
         ;
     }
 
-    public function redirectTo()
+    protected function redirectTo()
     {
         return redirect()->route('posts.index');
     }
@@ -59,8 +59,7 @@ class PostController extends Controller
         $validated = $request->validated();
         $validated['owner_id'] = auth()->id();
         $post = Post::create($validated);
-        empty($request->tags)
-            ?: $post->syncTags($request->tags);
+        $post->syncTags($request->tags);
         return $this->redirectTo();
     }
 
@@ -96,8 +95,7 @@ class PostController extends Controller
     public function update(StorePost $request, Post $post)
     {
         $post->update($request->validated());
-        empty($request->tags)
-            ?: $post->syncTags($request->tags);
+        $post->syncTags($request->tags);
         return $this->redirectTo();
     }
 

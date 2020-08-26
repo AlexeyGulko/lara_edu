@@ -1,7 +1,7 @@
 <?php
 
 use App\Comment;
-use App\NewsItem;
+use App\News;
 use App\Post;
 use App\Tag;
 use App\User;
@@ -43,9 +43,10 @@ class UsersWithPostsSeeder extends Seeder
                         'commentable_type' => '',
                         'commentable_id' => '',
                     ])
-                );
+                )
+            ;
 
-            $news = factory(NewsItem::class)
+            $news = factory(News::class)
                 ->create(['owner_id' => 1])
             ;
             $news->syncTags($randomTags);

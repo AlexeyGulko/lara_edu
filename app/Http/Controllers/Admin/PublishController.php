@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Post;
+use App\Interfaces\CanBePublished;
 
 class PublishController extends Controller
 {
@@ -12,9 +12,9 @@ class PublishController extends Controller
         $this->middleware('can:administrate');
     }
 
-    public function toggle($item)
+    public function toggle(CanBePublished $item)
     {
-        $item->update(['published' => \request()->boolean('published')]);
+        $item->publish();
         return redirect()->back();
     }
 }

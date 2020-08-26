@@ -5,5 +5,5 @@
         :action="route('admin.news.update', $news)"
         method="put"
         :item="$news"
-    />
+    ></x-post-form>
 @endsection

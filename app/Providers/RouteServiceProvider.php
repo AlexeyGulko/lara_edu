@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\NewsItem;
+use App\News;
 use App\Post;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
@@ -35,13 +35,13 @@ class RouteServiceProvider extends ServiceProvider
         parent::boot();
 
         Route::bind('news', function ($value) {
-            return NewsItem::where('slug', $value)->firstOrFail();
+            return News::where('slug', $value)->firstOrFail();
         });
         Route::bind('post', function ($value) {
             return Post::where('slug', $value)->firstOrFail();
         });
 
-        Route::model('news', NewsItem::class);
+        Route::model('news', News::class);
     }
 
     /**

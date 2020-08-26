@@ -2,70 +2,48 @@
 
 namespace App\Http\Controllers;
 
+use App\News;
 use App\Post;
 use App\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class StatisticController extends Controller
 {
     public function index()
     {
-        $statistics = [
-            'posts_quantity' => DB::table('posts')->count(),
-            'news_quantity' => DB::table('news')->count(),
+        $statistics = (object) [
+            'posts_quantity' => Post::count(),
+            'news_quantity'  => News::count(),
             'user_with_the_most_posts'    =>
-                DB::table('posts')
-                    ->join('users', 'posts.owner_id', 'users.id')
-                    ->selectRaw('users.name, count(*) as post_count')
-                    ->groupBy('owner_id')
-                    ->orderBy('post_count', 'desc')
-                    ->value('users.name'),
+                User::withCount('posts')
+                    ->orderBy('posts_count', 'DESC')
+                    ->first()
+            ,
             'longest_post'  =>
-                DB::table('posts')
-                    ->selectRaw('slug, title, length(body) as length')
-                    ->orderBy('length', 'desc')
-                    ->where('published', true)
-                    ->first(),
+                Post::selectRaw('*, LENGTH(body) AS length')
+                    ->orderBy('length', 'DESC')
+                    ->first()
+            ,
             'shortest_post' =>
-                DB::table('posts')
-                    ->selectRaw('slug, title, length(body) as length')
-                    ->orderBy('length', 'asc')
-                    ->where('published', true)
-                    ->first(),
+                Post::selectRaw('*, LENGTH(body) AS length')
+                    ->orderBy('length', 'ASC')
+                    ->first()
+            ,
             'most_unstable_post'    =>
-                DB::table('post_histories as h')
-                    ->join('posts', function ($join) {
-                        $join->on('h.post_id', 'posts.id')
-                            ->where('posts.published', true);
-                    })
-                    ->selectRaw('posts.slug as slug, posts.title as title, count(*) as count')
-                    ->groupBy('posts.slug')
-                    ->orderBy('count', 'desc')
-                    ->first(),
+                Post::withCount('history')
+                    ->orderBy('history_count', 'DESC')
+                    ->first()
+            ,
             'most_commented_post' =>
-                DB::table('comments as c')
-                    ->join('posts', function($join) {
-                        $join->on('c.commentable_id', 'posts.id')
-                            ->where('c.commentable_type', Post::class)
-                            ->where('posts.published', true);
-                    })
-                    ->selectRaw('posts.slug as slug, posts.title as title, count(*) as comments_count')
-                    ->groupBy('posts.slug')
-                    ->orderBy('comments_count', 'desc')
-                    ->first(),
+                Post::withCount('comments')
+                    ->orderBy('comments_count', 'DESC')
+                    ->first()
+            ,
             'avg_posts_per_active_user' =>
-                DB::table(
-                    DB::table('posts')
-                        ->join('users', 'posts.owner_id', 'users.id')
-                        ->selectRaw('users.name, count(*) as post_count')
-                        ->groupBy('posts.owner_id')
-                        ->orderBy('post_count', 'desc')
-                        ->having('post_count','>', 1),
-                    'p'
-                )
-                    ->selectRaw('ROUND(avg(p.post_count), 1)')
-                    ->value('p.post_count')
+                DB::table(User::withCount('posts'))
+                    ->where('posts_count', '>', 1)
+                    ->avg('posts_count')
+            ,
         ];
 
         return view('statistic', compact('statistics'));

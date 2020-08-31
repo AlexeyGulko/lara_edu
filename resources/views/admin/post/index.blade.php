@@ -27,12 +27,12 @@
                     <td>{{ $post->owner->name }}</td>
                     <td>{{ $post->created_at->format('d M Y') }}</td>
                     <td>
-                        <x-publish-checkbox :item="$post"></x-publish-checkbox>
+                        <x-post.publish-checkbox :item="$post"></x-post.publish-checkbox>
                     </td>
                     <td>
                         <x-delete-button
-                            :item="$post"
-                        />
+                            :route="route('admin.posts.destroy', $post)"
+                        ></x-delete-button>
                     </td>
                 </tr>
             @endforeach

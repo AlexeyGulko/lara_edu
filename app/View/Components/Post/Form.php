@@ -1,24 +1,25 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\Post;
 
-use App\Interfaces\CanBePublished;
+use App\Post;
 use Illuminate\View\Component;
 
-class PublishCheckbox extends Component
+class Form extends Component
 {
-    public $action;
     public $item;
-
+    public $method;
+    public $action;
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct(CanBePublished $item)
+    public function __construct($action, $item = null, $method = 'post')
     {
+        $this->action = $action;
+        $this->method = $method;
         $this->item = $item;
-        $this->action = $item->publishRoute();
     }
 
     /**
@@ -28,6 +29,6 @@ class PublishCheckbox extends Component
      */
     public function render()
     {
-        return view('components.publish-checkbox');
+        return view('components.post.form');
     }
 }

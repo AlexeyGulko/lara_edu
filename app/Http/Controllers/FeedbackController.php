@@ -43,4 +43,11 @@ class FeedbackController extends Controller
 
         return redirect('/');
     }
+
+    public function index()
+    {
+        $feedbacks = Feedback::latest()->get();
+
+        return view('admin.feedback.index', compact('feedbacks'));
+    }
 }

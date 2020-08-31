@@ -14,9 +14,9 @@ class DeleteButton extends Component
      *
      * @return void
      */
-    public function __construct(CanBeDeleted $item)
+    public function __construct($route)
     {
-        $this->route = $item->deleteRoute();
+        $this->route = $route;
     }
 
     /**

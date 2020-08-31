@@ -11,7 +11,7 @@ class NewsController extends Controller
     {
         $this->middleware('auth');
         $this->middleware('can:administrate')
-            ->except('insex', 'show');
+            ->except('index', 'show');
     }
 
     protected function redirectTo()
@@ -41,8 +41,7 @@ class NewsController extends Controller
         $validated = $request->validated();
         $validated['owner_id'] = auth()->id();
         $news = News::create($validated);
-        empty($request->tags)
-            ?: $news->syncTags($request->tags);
+        $news->syncTags($request->tags);
         return $this->redirectTo();
     }
 
@@ -54,20 +53,13 @@ class NewsController extends Controller
     public function update(News $news, StoreNews $request)
     {
         $news->update($request->validated());
-        empty($request->tags)
-            ?: $news->syncTags($request->tags);
+        $news->syncTags($request->tags);
         return $this->redirectTo();
     }
 
     public function destroy(News $news)
     {
         $news->delete();
-        return $this->redirectTo();
-    }
-
-    public function publish(News $news)
-    {
-        $news->update(['published' => \request()->boolean('published')]);
         return $this->redirectTo();
     }
 }

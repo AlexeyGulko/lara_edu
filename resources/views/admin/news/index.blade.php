@@ -33,10 +33,14 @@
                     <td>{{ $item->owner->name }}</td>
                     <td>{{ $item->created_at->format('d M Y') }}</td>
                     <td>
-                        <x-publish-checkbox :item="$item"></x-publish-checkbox>
+                        <x-news.publish-checkbox
+                            :item="$item"
+                        ></x-news.publish-checkbox>
                     </td>
                     <td>
-                        <x-delete-button :item="$item"></x-delete-button>
+                        <x-delete-button
+                            :route="route('admin.news.destroy', $item)">
+                        </x-delete-button>
                     </td>
                 </tr>
             @endforeach

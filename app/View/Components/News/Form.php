@@ -1,6 +1,6 @@
 <?php
 
-namespace App\View\Components\post;
+namespace App\View\Components\News;
 
 use App\Post;
 use Illuminate\View\Component;

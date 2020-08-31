@@ -1,11 +1,11 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\Contracts;
 
 use App\Interfaces\CanBeCommented;
 use Illuminate\View\Component;
 
-class CommentForm extends Component
+abstract class CommentForm extends Component
 {
     public $action;
     /**
@@ -15,10 +15,10 @@ class CommentForm extends Component
      */
     public function __construct(CanBeCommented $object)
     {
-        $this->action = $object;
+        $this->action = $this->getRoute($object);
     }
 
-
+    abstract protected function getRoute($object);
 
     /**
      * Get the view / contents that represent the component.

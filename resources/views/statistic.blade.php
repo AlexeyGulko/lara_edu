@@ -35,7 +35,11 @@ use \Illuminate\Support\Arr;
                 </span>
             </li>
             <li class="list-group-item">
-                Средние количество статей у “активных” пользователей: {{ $statistics->avg_posts_per_active_user }}
+                Средние количество статей у “активных” пользователей:
+                {{ $statistics->avg_posts_per_active_user }}
+                @empty($statistics->avg_posts_per_active_user)
+                    Нет активных пользователей
+                @endempty
             </li>
             <li class="list-group-item">
                 Самая непостоянная статья:

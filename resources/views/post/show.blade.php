@@ -19,10 +19,12 @@
             >
                 Редактировать
             </a>
-            <x-delete-button :item="$post"/>
+            <x-delete-button
+                :route="route('posts.destroy', $post)"
+            ></x-delete-button>
         @endcan
         <hr>
-        <x-comment-form :object="$post"></x-comment-form>
+        <x-post.comment-form :object="$post"></x-post.comment-form>
         <x-comments :item="$post"></x-comments>
     </div>
 @endsection

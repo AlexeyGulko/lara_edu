@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\PostController as PostResourceController;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\StorePost;
 use App\Post;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Http\RedirectResponse;
 
-class PostController extends PostResourceController
+class PostController extends Controller
 {
 
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('can:administrate');
     }
 
     protected function redirectTo()
@@ -27,6 +28,7 @@ class PostController extends PostResourceController
      */
     public function index()
     {
+
         $posts = Post::with(['tags', 'owner'])->latest()->get();
         return view('admin.post.index', compact('posts'));
     }
@@ -34,5 +36,32 @@ class PostController extends PostResourceController
     public function edit(Post $post)
     {
         return view('admin.post.edit', compact('post'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param StorePost $request
+     * @param Post $post
+     * @return RedirectResponse
+     */
+    public function update(StorePost $request, Post $post)
+    {
+        $post->update($request->validated());
+        $post->syncTags($request->tags);
+        return $this->redirectTo();
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param Post $post
+     * @return RedirectResponse
+     * @throws \Exception
+     */
+    public function destroy(Post $post)
+    {
+        $post->delete();
+        return $this->redirectTo();
     }
 }

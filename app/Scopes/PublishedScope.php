@@ -12,8 +12,6 @@ class PublishedScope implements Scope
 {
     public function apply(Builder $builder, Model $model)
     {
-        if (! request()->is('admin/*')) {
-            $builder->where('published', true);
-        }
+        $builder->where('published', true);
     }
 }

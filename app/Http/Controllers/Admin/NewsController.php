@@ -32,30 +32,8 @@ class NewsController extends Controller
         return view('news.create');
     }
 
-    public function store(News $news, StoreNews $request, TagService $tagService)
-    {
-        $validated = $request->validated();
-        $validated['owner_id'] = auth()->id();
-        $news = News::create($validated);
-        $tagService->sync($news, $request->tags);
-        return $this->redirectTo();
-    }
-
     public function edit(News $news)
     {
         return view('news.edit', compact('news'));
-    }
-
-    public function update(News $news, StoreNews $request, TagService $tagService)
-    {
-        $news->update($request->validated());
-        $tagService->sync($news, $request->tags);
-        return $this->redirectTo();
-    }
-
-    public function destroy(News $news)
-    {
-        $news->delete();
-        return $this->redirectTo();
     }
 }

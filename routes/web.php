@@ -38,6 +38,17 @@ Route::group(
         Route::get('feedback', 'FeedbackController@index')
             ->name('feedback.index')
         ;
+        Route::resource('posts', 'PostController')
+            ->only(['edit'])
+        ;
+        Route::resource('posts', 'PostController')
+            ->only(['update', 'destroy'])
+            ->middleware('redirect.to:admin.posts.index')
+        ;
+        Route::resource('news', 'NewsController')
+            ->only(['update', 'destroy', 'store'])
+            ->middleware('redirect.to:admin.news.index')
+        ;
     }
 );
 
@@ -49,20 +60,14 @@ Route::group(
         'middleware' => ['can:administrate', 'auth',]
     ],
     function () {
-        Route::resource('posts', 'PostController')
-            ->except(['index', 'create', 'store'])
-        ;
-        Route::resource('news', 'NewsController')
-            ->except('show')
-        ;
         Route::get('/', 'AdminController@index')
             ->name('index')
         ;
         Route::resource('posts', 'PostController')
-            ->only(['index'])
+            ->only(['edit', 'index'])
         ;
         Route::resource('news', 'NewsController')
-            ->only('index')
+            ->only(['edit', 'index', 'create'])
         ;
     }
 );

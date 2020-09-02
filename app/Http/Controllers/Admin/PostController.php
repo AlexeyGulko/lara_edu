@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePost;
 use App\Post;
+use App\Service\TagService;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
 
@@ -45,10 +46,10 @@ class PostController extends Controller
      * @param Post $post
      * @return RedirectResponse
      */
-    public function update(StorePost $request, Post $post)
+    public function update(StorePost $request, Post $post, TagService $tagService)
     {
         $post->update($request->validated());
-        $post->syncTags($request->tags);
+        $tagService->sync($post, $request->tags);
         return $this->redirectTo();
     }
 

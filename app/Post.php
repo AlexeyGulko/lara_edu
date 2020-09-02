@@ -3,20 +3,13 @@
 namespace App;
 
 use App\Interfaces\CanBeCommented;
-use App\Interfaces\CanBeDeleted;
 use App\Interfaces\CanBePublished;
-use App\Traits\HasComments;
-use App\Traits\HasTags;
-use App\Traits\Publish;
+use App\Interfaces\HasTags;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 
-class Post extends Model implements CanBeCommented, CanBeDeleted, CanBePublished
+class Post extends Model implements CanBeCommented, CanBePublished, HasTags
 {
-    use HasTags,
-        HasComments,
-        Publish;
-
     protected $fillable = [
         'title',
         'slug',
@@ -54,5 +47,25 @@ class Post extends Model implements CanBeCommented, CanBeDeleted, CanBePublished
                 'after'     => Arr::except($this->getDirty(), ['updated_at']),
             ]
         );
+    }
+
+    public function comments()
+    {
+        return $this->morphMany(Comment::class, 'commentable')->latest();
+    }
+
+    public function publish()
+    {
+        $this->update(['published' => ! $this->published]);
+    }
+
+    public function tags()
+    {
+        return $this->morphToMany(Tag::class, 'taggable');
+    }
+
+    public function getTagsAsStringAttribute()
+    {
+        return $this->tags->implode('name', ',');
     }
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\NewsController as NewsResourceController;
 use App\Http\Requests\StoreNews;
 use App\News;
+use App\Service\TagService;
 
 class NewsController extends Controller
 {
@@ -31,12 +32,12 @@ class NewsController extends Controller
         return view('news.create');
     }
 
-    public function store(News $news, StoreNews $request)
+    public function store(News $news, StoreNews $request, TagService $tagService)
     {
         $validated = $request->validated();
         $validated['owner_id'] = auth()->id();
         $news = News::create($validated);
-        $news->syncTags($request->tags);
+        $tagService->sync($news, $request->tags);
         return $this->redirectTo();
     }
 
@@ -45,10 +46,10 @@ class NewsController extends Controller
         return view('news.edit', compact('news'));
     }
 
-    public function update(News $news, StoreNews $request)
+    public function update(News $news, StoreNews $request, TagService $tagService)
     {
         $news->update($request->validated());
-        $news->syncTags($request->tags);
+        $tagService->sync($news, $request->tags);
         return $this->redirectTo();
     }
 

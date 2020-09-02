@@ -1,29 +1,21 @@
 <?php
 
 
-namespace App\Traits;
+namespace App\Service;
 
 
+use App\Interfaces\HasTags;
 use App\Tag;
 
-trait HasTags
+class TagService
 {
-    public function tags()
-    {
-        return $this->morphToMany(Tag::class, 'taggable');
-    }
-
-    public function getTagsAsStringAttribute()
-    {
-        return $this->tags->implode('name', ',');
-    }
-
-    public function syncTags($tags)
+    public function sync(HasTags $model, $tags)
     {
         if (empty($tags)) {
             return;
         }
-        $modelTags = $this->tags->keyBy('name');
+
+        $modelTags = $model->tags->keyBy('name');
         $reqTags = $this->formatRequestTags($tags);
         $syncIds = $modelTags->intersectByKeys($reqTags)->pluck('id')->toArray();
         $syncTags = $reqTags->diffKeys($tags);
@@ -31,7 +23,7 @@ trait HasTags
             $tag = Tag::firstOrCreate(['name' => $tag]);
             $syncIds[] = $tag->id;
         }
-        $this->tags()->sync($syncIds);
+        $model->tags()->sync($syncIds);
     }
 
     private function formatRequestTags($tags)

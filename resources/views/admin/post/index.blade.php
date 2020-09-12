@@ -27,29 +27,12 @@
                     <td>{{ $post->owner->name }}</td>
                     <td>{{ $post->created_at->format('d M Y') }}</td>
                     <td>
-                        <form
-                            action="{{ route('admin.posts.publish', $post) }}"
-                            method="POST"
-                        >
-                            @csrf
-                            @method('PUT')
-                            <div class="form-check">
-                                <input
-                                    type="checkbox"
-                                    class="form-check-input"
-                                    name="published"
-                                    @if((bool) $post->published )
-                                    checked
-                                    @endif
-                                    onchange="this.form.submit()"
-                                >
-                            </div>
-                        </form>
+                        <x-post.publish-checkbox :item="$post"></x-post.publish-checkbox>
                     </td>
                     <td>
-                        <x-post-delete-button
-                            :post="$post"
-                        />
+                        <x-delete-button
+                            :route="route('admin.posts.destroy', $post)"
+                        ></x-delete-button>
                     </td>
                 </tr>
             @endforeach

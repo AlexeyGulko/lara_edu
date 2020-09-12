@@ -3,24 +3,89 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+Route::group(
+    [
+        'middleware' => ['published.scope']
+    ],
+    function () {
+        Route::get('/', 'PostController@index')
+            ->name('home')
+        ;
+        Route::get('/tags/{tag}', 'TagController@index')
+            ->name('tags.index')
+        ;
+        Route::resource('posts', 'PostController');
 
-Route::get('/', 'PostController@index')
-    ->name('home')
-;
-Route::get('/posts/tags/{tag}', 'TagController@index')
-    ->name('posts.index.tags')
-;
-Route::resource('posts', 'PostController');
+        Route::resource('news','NewsController')->only('index', 'show');
+
+        Route::post('/news/{news}/comment', 'CommentController@store')
+            ->name('news.comments.store')
+        ;
+        Route::post('/posts/{post}/comment', 'CommentController@store')
+            ->name('posts.comments.store')
+        ;
+        Route::get('/statistic', 'StatisticController@index')->name('statistic');
+    }
+);
+
+Route::group(
+    [
+        'prefix'     => 'admin',
+        'as'         => 'admin.',
+        'middleware' => ['can:administrate', 'auth',]
+    ],
+    function () {
+        Route::get('feedback', 'FeedbackController@index')
+            ->name('feedback.index')
+        ;
+        Route::resource('posts', 'PostController')
+            ->only(['edit'])
+        ;
+        Route::resource('posts', 'PostController')
+            ->only(['update', 'destroy'])
+            ->middleware('redirect.to:admin.posts.index')
+        ;
+        Route::resource('news', 'NewsController')
+            ->only(['update', 'destroy', 'store'])
+            ->middleware('redirect.to:admin.news.index')
+        ;
+    }
+);
+
+Route::group(
+    [
+        'prefix'     => 'admin',
+        'as'         => 'admin.',
+        'namespace'  => 'Admin',
+        'middleware' => ['can:administrate', 'auth',]
+    ],
+    function () {
+        Route::get('/', 'AdminController@index')
+            ->name('index')
+        ;
+        Route::resource('posts', 'PostController')
+            ->only(['edit', 'index'])
+        ;
+        Route::resource('news', 'NewsController')
+            ->only(['edit', 'index', 'create'])
+        ;
+    }
+);
+
+Route::group(
+    [
+        'middleware' => ['can:administrate', 'auth',]
+    ],
+    function () {
+        Route::put('/posts/{post}/publish', 'PublishController@toggle')
+            ->name('posts.publish')
+        ;
+        Route::put('/news/{news}/publish', 'PublishController@toggle')
+            ->name('news.publish')
+        ;
+    }
+);
+
 
 Route::post('/feedback/create', 'FeedbackController@store')
     ->name('feedback.store')
@@ -35,18 +100,3 @@ Route::get('/about', function () {
 ;
 
 Auth::routes();
-
-Route::group(['prefix'  => 'admin', 'as' => 'admin.'], function () {
-    Route::get('/', 'Admin\AdminController@index')
-        ->name('index')
-    ;
-    Route::resource('posts', 'Admin\PostController')
-        ->except(['create', 'store'])
-    ;
-    Route::get('feedback', 'FeedbackController@index')
-        ->name('feedback.index')
-    ;
-    Route::put('/posts/{post}/publish', 'PublishController@toggle')
-        ->name('posts.publish')
-    ;
-});

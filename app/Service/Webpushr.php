@@ -38,6 +38,5 @@ class Webpushr
          curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($req_data) );
          curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
          $response = curl_exec($ch);
-         echo $response;
      }
 }

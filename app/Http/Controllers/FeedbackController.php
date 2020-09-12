@@ -20,17 +20,6 @@ class FeedbackController extends Controller
             ->only(['index'])
         ;
     }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return Application|Factory|View
-     */
-    public function index()
-    {
-        $feedbacks = Feedback::latest()->get();
-
-        return view('feedback.index', compact('feedbacks'));
-    }
 
     /**
      * Show the form for creating a new resource.
@@ -55,4 +44,10 @@ class FeedbackController extends Controller
         return redirect('/');
     }
 
+    public function index()
+    {
+        $feedbacks = Feedback::latest()->get();
+
+        return view('admin.feedback.index', compact('feedbacks'));
+    }
 }

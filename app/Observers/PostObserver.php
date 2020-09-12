@@ -7,6 +7,7 @@ use App\Mail\PostDeleted;
 use App\Mail\PostUpdated;
 use App\Post;
 use App\Service\Webpushr;
+use Illuminate\Support\Arr;
 
 class PostObserver
 {
@@ -39,6 +40,7 @@ class PostObserver
      */
     public function updated(Post $post)
     {
+        $post->saveHistory();
         flashMessage('Пост обновлён');
         \Mail::to(config('mail.to.admin'))
             ->queue(new PostUpdated($post));
@@ -55,27 +57,5 @@ class PostObserver
         flashMessage('Пост удалён', 'warning');
         \Mail::to(config('mail.to.admin'))
             ->send(new PostDeleted($post));
-    }
-
-    /**
-     * Handle the post "restored" event.
-     *
-     * @param  \App\Post  $post
-     * @return void
-     */
-    public function restored(Post $post)
-    {
-        //
-    }
-
-    /**
-     * Handle the post "force deleted" event.
-     *
-     * @param  \App\Post  $post
-     * @return void
-     */
-    public function forceDeleted(Post $post)
-    {
-        //
     }
 }

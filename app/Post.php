@@ -2,10 +2,13 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Builder;
+use App\Interfaces\CanBeCommented;
+use App\Interfaces\CanBePublished;
+use App\Interfaces\HasTags;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 
-class Post extends Model
+class Post extends Model implements CanBeCommented, CanBePublished, HasTags
 {
     protected $fillable = [
         'title',
@@ -16,19 +19,13 @@ class Post extends Model
         'owner_id',
     ];
 
+    protected $casts = ['published' => 'boolean',];
+
+    protected $with = ['comments',];
+
     public function getRouteKeyName()
     {
         return 'slug';
-    }
-
-    public function scopePublished(Builder $builder)
-    {
-        return $builder->where('published', true);
-    }
-
-    public function tags()
-    {
-        return $this->belongsToMany(Tag::class);
     }
 
     public function owner()
@@ -36,29 +33,39 @@ class Post extends Model
         return $this->belongsTo(User::class, 'owner_id');
     }
 
-    public function syncTags($tags)
+    public function history()
     {
-        $postTags = $this->tags->keyBy('name');
-        $reqTags = $this->formatRequestTags($tags);
-        $syncIds = $postTags->intersectByKeys($reqTags)->pluck('id')->toArray();
-        $syncTags = $reqTags->diffKeys($tags);
-        foreach ($syncTags as $tag) {
-            $tag = Tag::firstOrCreate(['name' => $tag]);
-            $syncIds[] = $tag->id;
-        }
-        $this->tags()->sync($syncIds);
+        return $this->hasMany(PostHistory::class)->latest();
     }
 
-    private function formatRequestTags($tags)
+    public function saveHistory()
     {
-        if (is_string($tags)) {
-            $tags = explode(',', $tags);
-        }
-        return collect($tags)->keyBy( function ($item) {
-            return $item;
-        });
+        $this->history()->create(
+            [
+                'user_id'   => auth()->id(),
+                'before'    => Arr::except($this->getOriginal(), ['created_at', 'updated_at']),
+                'after'     => Arr::except($this->getDirty(), ['updated_at']),
+            ]
+        );
     }
 
+    public function comments()
+    {
+        return $this->morphMany(Comment::class, 'commentable')->latest();
+    }
 
+    public function publish()
+    {
+        $this->update(['published' => ! $this->published]);
+    }
 
+    public function tags()
+    {
+        return $this->morphToMany(Tag::class, 'taggable');
+    }
+
+    public function getTagsAsStringAttribute()
+    {
+        return $this->tags->implode('name', ',');
+    }
 }

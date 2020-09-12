@@ -7,6 +7,9 @@ use Illuminate\Validation\Rule;
 
 class StorePost extends FormRequest
 {
+    protected $binding = 'post';
+    protected $table = 'posts';
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -47,10 +50,10 @@ class StorePost extends FormRequest
         ]);
     }
 
-    private function uniqueSlugRule()
+    protected function uniqueSlugRule()
     {
         return $this->isMethod('put')
-            ? Rule::unique('posts')->ignore($this->slug, 'slug')
-            : Rule::unique('posts');
+            ? Rule::unique($this->table)->ignore($this->{$this->binding}->id)
+            : Rule::unique($this->table);
     }
 }

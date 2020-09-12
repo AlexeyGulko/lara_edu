@@ -47,11 +47,21 @@ class User extends Authenticatable
         return $this->belongsToMany(Role::class);
     }
 
+    public function comments()
+    {
+        return $this->hasMany(Comment::class, 'owner_id');
+    }
+
     public function isAdmin()
     {
         return $this
             ->roles()
             ->where('name', 'admin')
             ->exists();
+    }
+
+    public function history()
+    {
+        return $this->hasMany(PostHistory::class);
     }
 }

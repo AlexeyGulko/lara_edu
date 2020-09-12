@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Post;
-use Illuminate\Http\Request;
+use App\Interfaces\CanBePublished;
 
 class PublishController extends Controller
 {
@@ -12,9 +11,9 @@ class PublishController extends Controller
         $this->middleware('can:administrate');
     }
 
-    public function toggle(Post $post)
+    public function toggle(CanBePublished $item)
     {
-        $post->update(['published' => \request()->boolean('published')]);
-        return redirect()->route('admin.posts.index');
+        $item->publish();
+        return redirect()->back();
     }
 }

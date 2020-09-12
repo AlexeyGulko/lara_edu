@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePost;
 use App\Post;
+use App\Service\TagService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
@@ -22,12 +23,9 @@ class PostController extends Controller
         ;
     }
 
-    public function redirectTo()
+    protected function redirectTo()
     {
-        $path = request()->is('admin/*')
-            ? route('admin.posts.index')
-            : route('posts.index');
-        return redirect($path);
+        return redirect()->route('posts.index');
     }
 
     /**
@@ -37,8 +35,8 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::published()->with('tags')->latest()->get();
-        return view('index', compact('posts'));
+        $posts = Post::with('tags')->latest()->get();
+        return view('post.index', compact('posts'));
     }
 
     /**
@@ -57,13 +55,12 @@ class PostController extends Controller
      * @param StorePost $request
      * @return Application|RedirectResponse|Redirector
      */
-    public function store(StorePost $request)
+    public function store(StorePost $request, TagService $tagService)
     {
         $validated = $request->validated();
         $validated['owner_id'] = auth()->id();
         $post = Post::create($validated);
-        empty($request->tags)
-            ?: $post->syncTags($request->tags);
+        $tagService->sync($post, $request->tags);
         return $this->redirectTo();
     }
 
@@ -94,13 +91,13 @@ class PostController extends Controller
      *
      * @param StorePost $request
      * @param Post $post
+     * @param TagService $tagService
      * @return RedirectResponse
      */
-    public function update(StorePost $request, Post $post)
+    public function update(StorePost $request, Post $post, TagService $tagService)
     {
         $post->update($request->validated());
-        empty($request->tags)
-            ?: $post->syncTags($request->tags);
+        $tagService->sync($post, $request->tags);
         return $this->redirectTo();
     }
 

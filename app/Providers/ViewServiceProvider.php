@@ -3,9 +3,12 @@
 namespace App\Providers;
 
 use App\Tag;
+use App\View\Components\CommentForm;
+use App\View\Components\DeleteButton;
 use App\View\Components\post\Form;
+use App\View\Components\TagItem;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
-use Blade;
 
 class ViewServiceProvider extends ServiceProvider
 {
@@ -31,5 +34,8 @@ class ViewServiceProvider extends ServiceProvider
         });
 
         Blade::component('post-form', Form::class);
+        Blade::component('delete-button', DeleteButton::class);
+        Blade::component('tag-item', TagItem::class);
+        Blade::component('comment-form', CommentForm::class);
     }
 }

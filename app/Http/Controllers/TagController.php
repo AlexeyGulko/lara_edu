@@ -8,7 +8,11 @@ class TagController extends Controller
 {
     public function index(Tag $tag)
     {
-        $posts = $tag->posts()->published()->with('tags')->latest()->get();
-        return view('index', compact('posts'));
+        $tag->load('posts', 'news');
+        $items = collect($tag->getRelations())
+            ->flatten()
+            ->sortByDesc('created_at')
+            ->all();
+        return view('tag.index', compact('items'));
     }
 }

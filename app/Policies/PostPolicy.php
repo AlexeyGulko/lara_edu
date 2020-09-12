@@ -12,7 +12,9 @@ class PostPolicy
 
     public function before(User $user)
     {
-        return $user->isAdmin();
+        if ($user->isAdmin()) {
+            return true;
+        }
     }
     /**
      * Determine whether the user can update the model.
@@ -26,4 +28,9 @@ class PostPolicy
         return $user->id === $post->owner->id;
     }
 
+    public function show(User $user, Post $post)
+    {
+        return $post->published
+            || ($user->id === $post->owner->id);
+    }
 }

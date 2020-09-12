@@ -2,16 +2,21 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\PostController as PostResourceController;
+use App\Http\Controllers\Controller;
 use App\Post;
 use Illuminate\Contracts\Support\Renderable;
 
-class PostController extends PostResourceController
+class PostController extends Controller
 {
 
     public function __construct()
     {
-        $this->middleware('can:administrate');
+        $this->middleware('auth');
+    }
+
+    protected function redirectTo()
+    {
+        return redirect()->route('admin.posts.index');
     }
 
     /**
@@ -21,6 +26,7 @@ class PostController extends PostResourceController
      */
     public function index()
     {
+
         $posts = Post::with(['tags', 'owner'])->latest()->get();
         return view('admin.post.index', compact('posts'));
     }

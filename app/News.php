@@ -53,4 +53,9 @@ class News extends Model implements CanBeCommented, CanBePublished, HasTags
     {
         return $this->tags->implode('name', ',');
     }
+
+    public function modelAlias()
+    {
+        return 'news';
+    }
 }

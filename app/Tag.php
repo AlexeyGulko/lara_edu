@@ -26,6 +26,16 @@ class Tag extends Model
 
     public static function tagsCloud()
     {
-        return static::has('posts')->get();
+        // TODO refactoring to dynamic
+
+        return static::has('posts')
+            ->orHas('news')
+            ->get()
+        ;
+    }
+
+    public function modelAlias()
+    {
+        return $this->modelAlias;
     }
 }

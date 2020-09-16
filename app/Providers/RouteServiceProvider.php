@@ -34,14 +34,8 @@ class RouteServiceProvider extends ServiceProvider
     {
         parent::boot();
 
-        Route::bind('news', function ($value) {
-            return News::where('slug', $value)->firstOrFail();
-        });
-        Route::bind('post', function ($value) {
-            return Post::where('slug', $value)->firstOrFail();
-        });
-
         Route::model('news', News::class);
+        Route::model('post', Post::class);
     }
 
     /**

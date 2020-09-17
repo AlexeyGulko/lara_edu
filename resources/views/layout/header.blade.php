@@ -5,7 +5,7 @@
         </div>
         <div class="col-4 text-center">
             <a
-                class="blog-header-logo text-dark"
+                class="blog-header-logo text-dark d-none d-sm-inline"
                 href="{{ route('home') }}"
             >
                 {{ config('app.name', 'Laravel')  }}

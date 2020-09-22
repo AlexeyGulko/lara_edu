@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Tag;
+use App\Models\Tag;
 use App\View\Components\CommentForm;
 use App\View\Components\DeleteButton;
 use App\View\Components\post\Form;

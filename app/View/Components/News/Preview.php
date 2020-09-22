@@ -2,7 +2,7 @@
 
 namespace App\View\Components\News;
 
-use App\News;
+use App\Models\News;
 use Illuminate\View\Component;
 
 class Preview extends Component

@@ -2,7 +2,7 @@
 
 namespace App\View\Components\Post;
 
-use App\Post;
+use App\Models\Post;
 use Illuminate\View\Component;
 
 class Form extends Component

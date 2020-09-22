@@ -59,6 +59,12 @@ Route::group(
             Route::resource('news', 'NewsController')
                 ->only(['edit', 'index', 'create'])
             ;
+            Route::get('reports', 'ReportController@index')
+                ->name('report.index')
+            ;
+            Route::get('reports/count', 'CountReportController@index')
+                ->name('report.count.index')
+            ;
         });
     }
 );

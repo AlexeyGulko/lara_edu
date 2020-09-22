@@ -2,14 +2,14 @@
 
 namespace App\Observers;
 
-use App\Comment;
+use App\Models\Comment;
 
 class CommentObserver
 {
     /**
      * Handle the comment "created" event.
      *
-     * @param  \App\Comment  $comment
+     * @param  Comment  $comment
      * @return void
      */
     public function created(Comment $comment)

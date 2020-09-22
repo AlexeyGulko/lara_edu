@@ -1,20 +1,44 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace Database\Factories;
 
-use App\Comment;
-use Faker\Generator as Faker;
+use App\Interfaces\CanBeCommented;
+use App\Models\Comment;
+use App\Models\User;
+use App\Models\News;
+use App\Models\Post;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(Comment::class, function (Faker $faker) {
-    $commentable = [
-        App\Post::class,
-        App\News::class,
+class CommentFactory extends Factory
+{
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = Comment::class;
+
+    /**
+     * @var CanBeCommented[]
+     */
+    protected $commentable = [
+        Post::class,
+        News::class,
     ];
-    $commentableType = $faker->randomElement($commentable);
-    return [
-        'body' => $faker->sentence,
-        'owner_id' => factory(\App\User::class),
-        'commentable_type' => $commentableType,
-        'commentable_id' => factory($commentableType)->make()->id,
-    ];
-});
+
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+        $commentableType = $this->faker->randomElement($this->commentable);
+        return [
+            'body' => $this->faker->sentence,
+            'owner_id' => User::factory()->create(),
+            'commentable_type' => $commentableType,
+            'commentable_id' => $commentableType::factory()->make()->id,
+        ];
+    }
+}

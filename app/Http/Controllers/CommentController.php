@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Interfaces\CanBeCommented;
-use App\News;
-use App\Post;
+use App\Models\News;
+use App\Models\Post;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller

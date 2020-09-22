@@ -2,8 +2,8 @@
 
 namespace App\Http\Middleware;
 
-use App\News;
-use App\Post;
+use App\Models\News;
+use App\Models\Post;
 use App\Scopes\PublishedScope;
 use Closure;
 use Illuminate\Database\Eloquent\Model;

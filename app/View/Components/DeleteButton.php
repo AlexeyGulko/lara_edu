@@ -2,7 +2,6 @@
 
 namespace App\View\Components;
 
-use App\Interfaces\CanBeDeleted;
 use Illuminate\View\Component;
 
 class DeleteButton extends Component

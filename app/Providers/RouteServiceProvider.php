@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\News;
-use App\Post;
+use App\Models\News;
+use App\Models\Post;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
 

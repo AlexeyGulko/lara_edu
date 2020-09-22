@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\News;
-use App\Post;
-use App\User;
+use App\Models\News;
+use App\Models\Post;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
 class StatisticController extends Controller

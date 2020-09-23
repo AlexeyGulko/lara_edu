@@ -65,6 +65,9 @@ Route::group(
             Route::get('reports/count', 'CountReportController@index')
                 ->name('report.count.index')
             ;
+            Route::post('reports/count', 'CountReportController@create')
+                ->name('report.count.create')
+            ;
         });
     }
 );

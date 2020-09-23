@@ -12,7 +12,7 @@
                 <rect width="4" height="9" x="6" y="6" rx="1"/>
                 <rect width="4" height="14" x="11" y="1" rx="1"/>
             </svg>
-            <span>Статьи</span>
+            <span>Колличество</span>
         </a>
     </div>
 @endsection

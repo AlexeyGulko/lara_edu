@@ -56,6 +56,6 @@ class PostObserver
     {
         flashMessage('Пост удалён', 'warning');
         \Mail::to(config('mail.to.admin'))
-            ->send(new PostDeleted($post));
+            ->queue(new PostDeleted($post->attributesToArray()));
     }
 }

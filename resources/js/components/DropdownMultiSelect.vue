@@ -18,11 +18,11 @@
                 selectedLabel="выбрано"
                 selectGroupLabel=""
                 deselectGroupLabel=""
-            >
-            </multiselect>
+            ></multiselect>
         </div>
         <button
             class="btn btn-outline-success ml-2 button"
+            :disabled="isButtonDisabled"
             @click="send"
         >
             Отправить
@@ -39,29 +39,34 @@
             }
         },
         computed: {
-            selectAll: function () {
+            selectAll () {
                 return [
                     {
-                        name: 'выбрать всё',
+                        name: _.isEqual(this.options, this.value)
+                            ? 'очистить'
+                            : 'выбрать всё',
                         options: this.options,
                     }
                 ]
+            },
+            isButtonDisabled () {
+                return _.isEmpty(this.value)
             }
         },
         methods: {
             send () {
-                console.log(JSON.parse(JSON.stringify(this.value)))
-                axios.post('/admin/reports/count', this.value)
-                    .then( (response) => {
-                        console.log(response)
+                const values = _.map(this.value, (item) => {
+                    return item.value
+                })
+                axios.post('/admin/reports/count', { counters: values })
+                    .then( () => {
                     })
-                    .catch( (response) => {
-                        console.log(response)
-                    })
+                    .catch( () => {})
             }
         }
     }
 </script>
+
 <style scoped>
     .button {
         height: 42.5px;

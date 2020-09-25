@@ -8,7 +8,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Collection;
 
-class RecentPosts extends Mailable
+class RecentPosts extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 

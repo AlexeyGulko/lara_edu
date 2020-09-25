@@ -8,7 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class PostDeleted extends Mailable
+class PostDeleted extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
@@ -19,9 +19,9 @@ class PostDeleted extends Mailable
      *
      * @return void
      */
-    public function __construct(Post $post)
+    public function __construct(array $post)
     {
-        $this->post = $post;
+        $this->post = (object) $post;
     }
 
     /**

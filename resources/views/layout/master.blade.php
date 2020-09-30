@@ -6,6 +6,7 @@
             @include('layout.nav')
         @show
         @include('layout.flash_message')
+        <notification-container></notification-container>
         <div class="row my-4">
             @yield('content')
             @section('sidebar')

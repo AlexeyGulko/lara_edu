@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Models\Post;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -10,21 +11,19 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class CountReportGenerated implements ShouldBroadcast
+class PostUpdatedEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $counters;
-    public $userId;
+    private $post;
     /**
      * Create a new event instance.
      *
-     * @param $counters
+     * @return void
      */
-    public function __construct($counters)
+    public function __construct(Post $post)
     {
-        $this->counters = $counters;
-        $this->userId = auth()->id();
+        $this->post = $post;
     }
 
     /**
@@ -34,6 +33,19 @@ class CountReportGenerated implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('reports.count.' . $this->userId);
+        return new PrivateChannel('post');
+    }
+
+    public function broadcastWith()
+    {
+        return [
+            'post'  =>
+                [
+                    'title'      => $this->post->title,
+                    'url'        => route('posts.show', $this->post),
+                    'updated_at' => $this->post->updated_at,
+                    'updated'    => array_keys($this->post->history()->first()->after)
+                ]
+        ];
     }
 }

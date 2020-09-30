@@ -1,4 +1,8 @@
 window._ = require('lodash');
+window.timeAgo = require('timeago.js');
+
+const timeago_locale = require('./timeago/ru').default
+timeAgo.register('ru', timeago_locale)
 
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support

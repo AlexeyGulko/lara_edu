@@ -23,10 +23,11 @@ window.Vue = require('vue');
 
 import Multiselect from 'vue-multiselect'
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('multiselect', Multiselect)
 Vue.component('dropdown-multiselect', require('./components/DropdownMultiSelect.vue').default)
 Vue.component('count-report', require('./components/CountReport.vue').default)
+Vue.component('notification-container', require('./components/NotificationContainer.vue').default)
+Vue.component('post-notification', require('./components/PostNotification.vue').default)
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

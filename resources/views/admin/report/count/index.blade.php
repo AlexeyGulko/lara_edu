@@ -8,7 +8,7 @@
             </div>
         </div>
         <div class="row my-4">
-            <count-report></count-report>
+            <count-report :user_id="{{auth()->id()}}"></count-report>
         </div>
     </div>
 @endsection

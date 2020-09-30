@@ -20,7 +20,9 @@ class CountReportController extends Controller
     public function create(CountReportRequest $request, CountReportService $service)
     {
         $counters = $service->count($request->validated()['counters']);
+
         event(new CountReportGenerated($counters));
+
         Mail::to($request->user())
             ->queue(new CountReportMail($counters))
         ;

@@ -25,13 +25,14 @@
 
 <script>
     export default {
+        props: ['user_id'],
         data () {
             return {
                 counters: null
             }
         },
         mounted() {
-            Echo.private('reports.count')
+            window.Echo.private('reports.count.' + this.user_id)
                 .listen('CountReportGenerated', (data) => {
                         this.counters = data.counters
                     }

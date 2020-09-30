@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Events\PostUpdatedEvent;
 use App\Mail\PostCreated;
 use App\Mail\PostDeleted;
 use App\Mail\PostUpdated;
@@ -44,6 +45,7 @@ class PostObserver
         flashMessage('Пост обновлён');
         \Mail::to(config('mail.to.admin'))
             ->queue(new PostUpdated($post));
+        event(new PostUpdatedEvent($post));
     }
 
     /**

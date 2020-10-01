@@ -15,7 +15,7 @@ class PostUpdatedEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    private $post;
+    private Post $post;
     /**
      * Create a new event instance.
      *

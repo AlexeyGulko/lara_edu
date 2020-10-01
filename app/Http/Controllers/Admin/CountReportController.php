@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Events\CountReportGenerated;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CountReportRequest;
+use App\Jobs\CountReportGeneration;
 use App\Mail\CountReportMail;
 use App\Service\CountReportService;
 use Illuminate\Http\Request;
@@ -17,15 +18,8 @@ class CountReportController extends Controller
         return view('admin.report.count.index', ['options' => $service->getAliases()]);
     }
 
-    public function create(CountReportRequest $request, CountReportService $service)
+    public function create(CountReportRequest $request)
     {
-        $counters = $service->count($request->validated()['counters']);
-
-        event(new CountReportGenerated($counters));
-
-        Mail::to($request->user())
-            ->queue(new CountReportMail($counters))
-        ;
-        return $request->all();
+        CountReportGeneration::dispatch($request->validated()['counters'], $request->user());
     }
 }

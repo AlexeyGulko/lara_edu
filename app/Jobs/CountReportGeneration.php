@@ -3,8 +3,8 @@
 namespace App\Jobs;
 
 use App\Events\CountReportGenerated;
-use App\Http\Requests\CountReportRequest;
 use App\Mail\CountReportMail;
+use App\Models\User;
 use App\Service\CountReportService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -17,16 +17,17 @@ class CountReportGeneration implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    private $request;
-    private $user;
+    private array $counters;
+    private User $user;
 
     /**
      * Create a new job instance.
-     *
+     * @param array $counters
+     * @param User $user
      */
-    public function __construct($request, $user)
+    public function __construct(array $counters, User $user)
     {
-        $this->request = $request;
+        $this->counters = $counters;
         $this->user = $user;
     }
 
@@ -38,7 +39,7 @@ class CountReportGeneration implements ShouldQueue
      */
     public function handle(CountReportService $service)
     {
-        $counters = $service->count($this->request);
+        $counters = $service->count($this->counters);
         event(new CountReportGenerated($counters, $this->user));
 
         Mail::to($this->user)

@@ -2,14 +2,14 @@
 
 namespace App\Observers;
 
-use App\News;
+use App\Models\News;
 
 class NewsObserver
 {
     /**
      * Handle the news item "created" event.
      *
-     * @param  \App\News  $newsItem
+     * @param  News  $newsItem
      * @return void
      */
     public function created(News $newsItem)
@@ -20,7 +20,7 @@ class NewsObserver
     /**
      * Handle the news item "updated" event.
      *
-     * @param  \App\News  $newsItem
+     * @param  News  $newsItem
      * @return void
      */
     public function updated(News $newsItem)
@@ -31,7 +31,7 @@ class NewsObserver
     /**
      * Handle the news item "deleted" event.
      *
-     * @param  \App\News  $newsItem
+     * @param  News  $newsItem
      * @return void
      */
     public function deleted(News $newsItem)

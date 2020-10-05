@@ -1,5 +1,5 @@
 @extends('layout.master')
-@section('title', 'Главная')
+@section('title', 'Статьи')
 @section('content')
     <div class="col-md-8">
         @forelse($posts as $post)

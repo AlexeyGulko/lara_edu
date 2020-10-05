@@ -1,4 +1,8 @@
 window._ = require('lodash');
+window.timeAgo = require('timeago.js');
+
+const timeago_locale = require('./timeago/ru').default
+timeAgo.register('ru', timeago_locale)
 
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
@@ -29,13 +33,11 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
  * allows your team to easily build robust real-time web applications.
  */
 
-// import Echo from 'laravel-echo';
+import Echo from 'laravel-echo';
 
-// window.Pusher = require('pusher-js');
+window.io = require('socket.io-client');
 
-// window.Echo = new Echo({
-//     broadcaster: 'pusher',
-//     key: process.env.MIX_PUSHER_APP_KEY,
-//     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
-//     forceTLS: true
-// });
+window.Echo = new Echo({
+    broadcaster: 'socket.io',
+    host: window.location.hostname + ':6001',
+});

@@ -1,15 +1,19 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use App\Interfaces\CanBeCommented;
 use App\Interfaces\CanBePublished;
 use App\Interfaces\HasTags;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Arr;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Post extends Model implements CanBeCommented, CanBePublished, HasTags
+class News extends Model implements CanBeCommented, CanBePublished, HasTags
 {
+    use HasFactory;
+
+    protected $table = 'news';
+
     protected $fillable = [
         'title',
         'slug',
@@ -33,22 +37,6 @@ class Post extends Model implements CanBeCommented, CanBePublished, HasTags
         return $this->belongsTo(User::class, 'owner_id');
     }
 
-    public function history()
-    {
-        return $this->hasMany(PostHistory::class)->latest();
-    }
-
-    public function saveHistory()
-    {
-        $this->history()->create(
-            [
-                'user_id'   => auth()->id(),
-                'before'    => Arr::except($this->getOriginal(), ['created_at', 'updated_at']),
-                'after'     => Arr::except($this->getDirty(), ['updated_at']),
-            ]
-        );
-    }
-
     public function comments()
     {
         return $this->morphMany(Comment::class, 'commentable')->latest();
@@ -67,5 +55,10 @@ class Post extends Model implements CanBeCommented, CanBePublished, HasTags
     public function getTagsAsStringAttribute()
     {
         return $this->tags->implode('name', ',');
+    }
+
+    public function modelAlias()
+    {
+        return 'news';
     }
 }

@@ -2,13 +2,13 @@
 
 namespace App\Providers;
 
-use App\Tag;
+use App\Models\Tag;
 use App\View\Components\CommentForm;
 use App\View\Components\DeleteButton;
 use App\View\Components\post\Form;
-use App\View\Components\TagItem;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\View\View;
 
 class ViewServiceProvider extends ServiceProvider
 {
@@ -29,13 +29,12 @@ class ViewServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        view()->composer(['layout.sidebar'], function (\Illuminate\View\View $view) {
+        view()->composer(['layout.sidebar'], function (View $view) {
             $view->with('tagsCloud', Tag::tagsCloud());
         });
 
         Blade::component('post-form', Form::class);
         Blade::component('delete-button', DeleteButton::class);
-        Blade::component('tag-item', TagItem::class);
         Blade::component('comment-form', CommentForm::class);
     }
 }

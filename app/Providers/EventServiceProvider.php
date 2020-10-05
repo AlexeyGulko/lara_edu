@@ -2,12 +2,12 @@
 
 namespace App\Providers;
 
-use App\Comment;
-use App\News;
+use App\Models\Comment;
+use App\Models\News;
+use App\Models\Post;
 use App\Observers\CommentObserver;
 use App\Observers\NewsObserver;
 use App\Observers\PostObserver;
-use App\Post;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;

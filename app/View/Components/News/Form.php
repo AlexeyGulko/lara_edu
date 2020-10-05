@@ -2,7 +2,6 @@
 
 namespace App\View\Components\News;
 
-use App\Post;
 use Illuminate\View\Component;
 
 class Form extends Component

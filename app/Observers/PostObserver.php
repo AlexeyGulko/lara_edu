@@ -2,10 +2,11 @@
 
 namespace App\Observers;
 
+use App\Events\PostUpdatedEvent;
 use App\Mail\PostCreated;
 use App\Mail\PostDeleted;
 use App\Mail\PostUpdated;
-use App\Post;
+use App\Models\Post;
 use App\Service\Webpushr;
 use Illuminate\Support\Arr;
 
@@ -21,7 +22,7 @@ class PostObserver
     /**
      * Handle the post "created" event.
      *
-     * @param  \App\Post  $post
+     * @param  Post  $post
      * @return void
      */
     public function created(Post $post)
@@ -35,7 +36,7 @@ class PostObserver
     /**
      * Handle the post "updated" event.
      *
-     * @param  \App\Post  $post
+     * @param  Post  $post
      * @return void
      */
     public function updated(Post $post)
@@ -44,18 +45,19 @@ class PostObserver
         flashMessage('Пост обновлён');
         \Mail::to(config('mail.to.admin'))
             ->queue(new PostUpdated($post));
+        event(new PostUpdatedEvent($post));
     }
 
     /**
      * Handle the post "deleted" event.
      *
-     * @param  \App\Post  $post
+     * @param  Post  $post
      * @return void
      */
     public function deleted(Post $post)
     {
         flashMessage('Пост удалён', 'warning');
         \Mail::to(config('mail.to.admin'))
-            ->send(new PostDeleted($post));
+            ->queue(new PostDeleted($post->attributesToArray()));
     }
 }

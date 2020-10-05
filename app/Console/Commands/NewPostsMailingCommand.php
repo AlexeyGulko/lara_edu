@@ -3,8 +3,8 @@
 namespace App\Console\Commands;
 
 use App\Mail\RecentPosts;
-use App\Post;
-use App\User;
+use App\Models\Post;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\NewsController as NewsResourceController;
 use App\Http\Requests\StoreNews;
-use App\News;
+use App\Models\News;
 use App\Service\TagService;
 
 class NewsController extends Controller

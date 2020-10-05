@@ -1,13 +1,15 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Tag extends Model
 {
-    protected $fillable = ['name'];
+    use HasFactory;
 
+    protected $fillable = ['name'];
 
     public function posts()
     {
@@ -26,6 +28,16 @@ class Tag extends Model
 
     public static function tagsCloud()
     {
-        return static::has('posts')->get();
+        // TODO refactoring to dynamic
+
+        return static::has('posts')
+            ->orHas('news')
+            ->get()
+        ;
+    }
+
+    public function modelAlias()
+    {
+        return $this->modelAlias;
     }
 }

@@ -49,26 +49,26 @@ Route::group(
             ->only(['update', 'destroy', 'store'])
             ->middleware('redirect.to:admin.news.index')
         ;
-    }
-);
-
-Route::group(
-    [
-        'prefix'     => 'admin',
-        'as'         => 'admin.',
-        'namespace'  => 'Admin',
-        'middleware' => ['can:administrate', 'auth',]
-    ],
-    function () {
-        Route::get('/', 'AdminController@index')
-            ->name('index')
-        ;
-        Route::resource('posts', 'PostController')
-            ->only(['edit', 'index'])
-        ;
-        Route::resource('news', 'NewsController')
-            ->only(['edit', 'index', 'create'])
-        ;
+        Route::namespace('Admin')->group(function () {
+            Route::get('/', 'AdminController@index')
+                ->name('index')
+            ;
+            Route::resource('posts', 'PostController')
+                ->only(['edit', 'index'])
+            ;
+            Route::resource('news', 'NewsController')
+                ->only(['edit', 'index', 'create'])
+            ;
+            Route::get('reports', 'ReportController@index')
+                ->name('report.index')
+            ;
+            Route::get('reports/count', 'CountReportController@index')
+                ->name('report.count.index')
+            ;
+            Route::post('reports/count', 'CountReportController@create')
+                ->name('report.count.create')
+            ;
+        });
     }
 );
 
@@ -85,7 +85,6 @@ Route::group(
         ;
     }
 );
-
 
 Route::post('/feedback/create', 'FeedbackController@store')
     ->name('feedback.store')

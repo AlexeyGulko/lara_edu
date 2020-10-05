@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\News;
-use App\Post;
+use App\Interfaces\CanBeCommented;
+use App\Models\News;
+use App\Models\Post;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
@@ -17,7 +18,7 @@ class CommentController extends Controller
      * @param Post|News
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store($object, Request $request)
+    public function store(CanBeCommented $object, Request $request)
     {
         $validated = $request->validate(['body' => 'required',]);
         $validated['owner_id'] = auth()->id();

@@ -2,6 +2,12 @@
 
 namespace App\Providers;
 
+use App\Models\Comment;
+use App\Models\News;
+use App\Models\Post;
+use App\Models\Tag;
+use App\Models\User;
+use App\Service\CountReportService;
 use App\Service\TagService;
 use App\Service\Webpushr;
 use Illuminate\Support\ServiceProvider;
@@ -23,6 +29,21 @@ class AppServiceProvider extends ServiceProvider
         );
 
         $this->app->singleton(TagService::class, fn () => new TagService());
+        $this
+            ->app
+            ->singleton(
+                CountReportService::class,
+                fn () => new CountReportService(
+                    [
+                        'posts'      => Post::class,
+                        'tags'       => Tag::class,
+                        'news'      => News::class,
+                        'users'      => User::class,
+                        'comments'   => Comment::class,
+                    ]
+                )
+            )
+        ;
     }
 
     /**

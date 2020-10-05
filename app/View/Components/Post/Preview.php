@@ -2,8 +2,7 @@
 
 namespace App\View\Components\Post;
 
-use App\News;
-use App\Post;
+use App\Models\Post;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\View\Component;
 

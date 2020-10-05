@@ -5,7 +5,7 @@ namespace App\Service;
 
 
 use App\Interfaces\HasTags;
-use App\Tag;
+use App\Models\Tag;
 
 class TagService
 {

@@ -1,10 +1,10 @@
 <?php
 
-use App\Comment;
-use App\News;
-use App\Post;
-use App\Tag;
-use App\User;
+use App\Models\Comment;
+use App\Models\News;
+use App\Models\Post;
+use App\Models\Tag;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 use Faker\Generator as Faker;
 
@@ -15,13 +15,17 @@ class UsersWithPostsSeeder extends Seeder
      *
      * @return void
      */
-    public function run(Faker $faker)
+    public function run(Faker $faker, \App\Service\TagService $sync)
     {
-        $tags = factory(Tag::class, 10)
-            ->make();
+        $tags = Tag::factory()
+            ->count(10)
+            ->make()
+        ;
 
-        $users = factory(User::class, 2)
-            ->create();
+        $users = User::factory()
+            ->count(2)
+            ->create()
+        ;
 
         Post::unsetEventDispatcher();
 
@@ -31,28 +35,35 @@ class UsersWithPostsSeeder extends Seeder
             );
             $randomUser = $faker->randomElement($users->pluck('id')->all());
 
-            $post = factory(Post::class)
+            $post = Post::factory()
                 ->create(['owner_id' => $randomUser])
             ;
-            $post->syncTags($randomTags);
+
+            $sync->sync($post, $randomTags);
+
             $post
                 ->comments()
-                ->saveMany(factory(Comment::class, rand(1, 10))
-                    ->make([
-                        'owner_id' => $randomUser,
-                        'commentable_type' => '',
-                        'commentable_id' => '',
-                    ])
+                ->saveMany(
+                    Comment::factory()
+                        ->count( rand(1, 10))
+                        ->make([
+                            'owner_id' => $randomUser,
+                            'commentable_type' => '',
+                            'commentable_id' => '',
+                        ])
                 )
             ;
 
-            $news = factory(News::class)
+            $news = News::factory()
                 ->create(['owner_id' => 1])
             ;
-            $news->syncTags($randomTags);
+
+            $sync->sync($news, $randomTags);
+
             $news
                 ->comments()
-                ->saveMany(factory(Comment::class, rand(1, 10))
+                ->saveMany(Comment::factory()
+                    ->count( rand(1, 10))
                     ->make([
                         'owner_id' => $randomUser,
                         'commentable_type' => '',

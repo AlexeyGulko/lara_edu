@@ -5,6 +5,7 @@
             <a class="p-2 text-muted" href="{{ route('admin.posts.index') }}">Статьи</a>
             <a class="p-2 text-muted" href="{{ route('admin.news.index') }}">Новости</a>
             <a class="p-2 text-muted" href="{{ route('admin.feedback.index') }}">Отзывы</a>
+            <a class="p-2 text-muted" href="{{ route('admin.report.index') }}">Отчёты</a>
             <a class="p-2 text-muted" href="{{ route('home') }}">на главную</a>
         </nav>
     </div>

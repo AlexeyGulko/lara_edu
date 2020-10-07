@@ -8,21 +8,29 @@ use App\Service\TagService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\View\View;
 
 class PostController extends Controller
 {
-
+    /**
+     * PostController constructor.
+     */
     public function __construct()
     {
-        $this->middleware('auth');
         $this
             ->middleware('can:update,post')
             ->except(['index', 'create', 'store', 'show',])
         ;
     }
 
+    /**
+     * helper method
+     *
+     * @return RedirectResponse
+     */
     protected function redirectTo()
     {
         return redirect()->route('posts.index');
@@ -35,7 +43,12 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::with('tags')->latest()->get();
+        $posts = Cache::tags(['publication', 'post'])->remember(
+            'posts',
+            3600,
+            function () {
+                return Post::with('tags')->latest()->get();
+            });
         return view('post.index', compact('posts'));
     }
 

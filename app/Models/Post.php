@@ -24,7 +24,7 @@ class Post extends Model implements CanBeCommented, CanBePublished, HasTags
 
     protected $casts = ['published' => 'boolean',];
 
-    protected $with = ['comments',];
+    protected $with = ['comments', 'tags', 'owner'];
 
     public function getRouteKeyName()
     {

@@ -10,12 +10,6 @@ use App\Service\TagService;
 
 class NewsController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-        $this->middleware('can:administrate');
-    }
-
     protected function redirectTo()
     {
         return redirect()->route('admin.news.index');

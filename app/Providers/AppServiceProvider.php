@@ -37,7 +37,7 @@ class AppServiceProvider extends ServiceProvider
                     [
                         'posts'      => Post::class,
                         'tags'       => Tag::class,
-                        'news'      => News::class,
+                        'news'       => News::class,
                         'users'      => User::class,
                         'comments'   => Comment::class,
                     ]

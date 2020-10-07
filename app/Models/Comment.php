@@ -14,6 +14,8 @@ class Comment extends Model
         'owner_id'
     ];
 
+    protected $with = ['owner',];
+
     /**
      * Get the owning commentable model.
      */

@@ -8,7 +8,7 @@ use App\Mail\PostDeleted;
 use App\Mail\PostUpdated;
 use App\Models\Post;
 use App\Service\Webpushr;
-use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Cache;
 
 class PostObserver
 {
@@ -27,6 +27,7 @@ class PostObserver
      */
     public function created(Post $post)
     {
+        Cache::tags(['publication', 'post'])->flush();
         flashMessage('Пост создан');
         $this->webpushr->send($post->title, $post->description);
         \Mail::to(config('mail.to.admin'))
@@ -41,6 +42,7 @@ class PostObserver
      */
     public function updated(Post $post)
     {
+        Cache::tags(['publication', 'post'])->flush();
         $post->saveHistory();
         flashMessage('Пост обновлён');
         \Mail::to(config('mail.to.admin'))
@@ -56,6 +58,7 @@ class PostObserver
      */
     public function deleted(Post $post)
     {
+        Cache::tags(['publication', 'post'])->flush();
         flashMessage('Пост удалён', 'warning');
         \Mail::to(config('mail.to.admin'))
             ->queue(new PostDeleted($post->attributesToArray()));

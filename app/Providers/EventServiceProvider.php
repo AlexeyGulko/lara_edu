@@ -3,9 +3,11 @@
 namespace App\Providers;
 
 use App\Models\Comment;
+use App\Models\Feedback;
 use App\Models\News;
 use App\Models\Post;
 use App\Observers\CommentObserver;
+use App\Observers\FeedbackObserver;
 use App\Observers\NewsObserver;
 use App\Observers\PostObserver;
 use Illuminate\Auth\Events\Registered;
@@ -38,6 +40,7 @@ class EventServiceProvider extends ServiceProvider
         Post::observe(PostObserver::class);
         News::observe(NewsObserver::class);
         Comment::observe(CommentObserver::class);
+        Feedback::observe(FeedbackObserver::class);
     }
 
     /**

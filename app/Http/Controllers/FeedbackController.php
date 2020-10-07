@@ -9,18 +9,11 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\View\View;
 
 class FeedbackController extends Controller
 {
-    public function __construct()
-    {
-        $this
-            ->middleware('can:administrate')
-            ->only(['index'])
-        ;
-    }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -46,7 +39,9 @@ class FeedbackController extends Controller
 
     public function index()
     {
-        $feedbacks = Feedback::latest()->get();
+        $feedbacks = Cache::tags('feedback')->remember('all', 3600, function () {
+            return Feedback::latest()->get();
+        });
 
         return view('admin.feedback.index', compact('feedbacks'));
     }

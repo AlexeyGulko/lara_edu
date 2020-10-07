@@ -8,12 +8,6 @@ use Illuminate\Contracts\Support\Renderable;
 
 class PostController extends Controller
 {
-
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     protected function redirectTo()
     {
         return redirect()->route('admin.posts.index');

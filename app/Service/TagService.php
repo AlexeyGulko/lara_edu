@@ -6,6 +6,7 @@ namespace App\Service;
 
 use App\Interfaces\HasTags;
 use App\Models\Tag;
+use Illuminate\Support\Facades\Cache;
 
 class TagService
 {
@@ -14,6 +15,8 @@ class TagService
         if (empty($tags)) {
             return;
         }
+        // reset cache
+        Cache::tags(['publication', 'tag'])->flush();
 
         $modelTags = $model->tags->keyBy('name');
         $reqTags = $this->formatRequestTags($tags);

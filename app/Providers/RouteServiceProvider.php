@@ -4,7 +4,9 @@ namespace App\Providers;
 
 use App\Models\News;
 use App\Models\Post;
+use App\Models\Tag;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 
 class RouteServiceProvider extends ServiceProvider
@@ -34,8 +36,32 @@ class RouteServiceProvider extends ServiceProvider
     {
         parent::boot();
 
-        Route::model('news', News::class);
-        Route::model('post', Post::class);
+        Route::bind('news', function ($slug) {
+            return Cache::tags('news')->remember(
+                $slug,
+                3600,
+                function () use ($slug) {
+                    return News::where('slug', $slug)->firstOrFail();
+                });
+        });
+
+        Route::bind('post', function ($slug) {
+            return Cache::tags('post')->remember(
+                $slug,
+                3600,
+                function () use ($slug) {
+                    return Post::where('slug', $slug)->firstOrFail();
+                });
+        });
+
+        Route::bind('tag', function ($name) {
+            return Cache::tags('tag')->remember(
+                $name,
+                3600,
+                function () use ($name) {
+                    return Tag::where('name', $name)->with('posts', 'news')->firstOrFail();
+                });
+        });
     }
 
     /**

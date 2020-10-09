@@ -16,7 +16,7 @@ class NewsController extends Controller
 
     public function index()
     {
-        $news = Cache::tags(['publication', 'news'])->remember(
+        $news = Cache::tags(['news', 'tag'])->remember(
             'news',
             3600,
             function () {

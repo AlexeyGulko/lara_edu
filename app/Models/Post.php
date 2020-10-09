@@ -76,4 +76,9 @@ class Post extends Model implements CanBeCommented, CanBePublished, HasTags
     {
         return 'post';
     }
+
+    public static function syncTags($callback)
+    {
+        static::registerModelEvent('deleting', $callback);
+    }
 }

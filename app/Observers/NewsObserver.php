@@ -15,7 +15,7 @@ class NewsObserver
      */
     public function created(News $newsItem)
     {
-        Cache::tags(['publication', 'news'])->flush();
+        Cache::tags(['news'])->flush();
         flashMessage('Новость создана');
     }
 
@@ -27,7 +27,7 @@ class NewsObserver
      */
     public function updated(News $newsItem)
     {
-        Cache::tags(['publication', 'news'])->flush();
+        Cache::tags(['news'])->flush();
         flashMessage('Новость обновлена');
     }
 
@@ -39,7 +39,7 @@ class NewsObserver
      */
     public function deleted(News $newsItem)
     {
-        Cache::tags(['publication', 'news'])->flush();
+        Cache::tags(['news'])->flush();
         flashMessage('Новость удалена', 'warning');
     }
 }

@@ -10,8 +10,10 @@ class TagController extends Controller
     {
         $items = collect($tag->getRelations())
             ->flatten()
+            ->where('published', 1)
             ->sortByDesc('created_at')
             ->all();
+
         return view('tag.index', compact('items'));
     }
 }

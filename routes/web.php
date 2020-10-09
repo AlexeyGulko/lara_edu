@@ -99,3 +99,7 @@ Route::get('/about', function () {
 ;
 
 Auth::routes();
+
+Route::get('test', function () {
+   return phpinfo();
+});

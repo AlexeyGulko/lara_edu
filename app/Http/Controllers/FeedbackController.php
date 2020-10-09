@@ -39,7 +39,7 @@ class FeedbackController extends Controller
 
     public function index()
     {
-        $feedbacks = Cache::tags('feedback')->remember('all', 3600, function () {
+        $feedbacks = Cache::tags('feedback')->remember('feedbacks', 3600, function () {
             return Feedback::latest()->get();
         });
 

@@ -43,11 +43,11 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Cache::tags(['publication', 'post'])->remember(
+        $posts = Cache::tags(['post', 'tag'])->remember(
             'posts',
             3600,
             function () {
-                return Post::with('tags')->latest()->get();
+                return Post::latest()->get();
             });
         return view('post.index', compact('posts'));
     }

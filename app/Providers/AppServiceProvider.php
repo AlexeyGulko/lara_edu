@@ -8,6 +8,7 @@ use App\Models\Post;
 use App\Models\Tag;
 use App\Models\User;
 use App\Service\CountReportService;
+use App\Service\StatisticService;
 use App\Service\TagService;
 use App\Service\Webpushr;
 use Illuminate\Support\ServiceProvider;
@@ -28,7 +29,6 @@ class AppServiceProvider extends ServiceProvider
              )
         );
 
-        $this->app->singleton(TagService::class, fn () => new TagService());
         $this
             ->app
             ->singleton(
@@ -44,6 +44,10 @@ class AppServiceProvider extends ServiceProvider
                 )
             )
         ;
+
+        $this->app->singleton(TagService::class, fn () => new TagService());
+
+        $this->app->singleton(StatisticService::class, fn() => new StatisticService());
     }
 
     /**

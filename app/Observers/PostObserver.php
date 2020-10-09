@@ -27,7 +27,7 @@ class PostObserver
      */
     public function created(Post $post)
     {
-        Cache::tags(['publication', 'post'])->flush();
+        Cache::tags(['post'])->flush();
         flashMessage('Пост создан');
         $this->webpushr->send($post->title, $post->description);
         \Mail::to(config('mail.to.admin'))
@@ -42,7 +42,7 @@ class PostObserver
      */
     public function updated(Post $post)
     {
-        Cache::tags(['publication', 'post'])->flush();
+        Cache::tags(['post'])->flush();
         $post->saveHistory();
         flashMessage('Пост обновлён');
         \Mail::to(config('mail.to.admin'))
@@ -58,7 +58,7 @@ class PostObserver
      */
     public function deleted(Post $post)
     {
-        Cache::tags(['publication', 'post'])->flush();
+        Cache::tags(['post'])->flush();
         flashMessage('Пост удалён', 'warning');
         \Mail::to(config('mail.to.admin'))
             ->queue(new PostDeleted($post->attributesToArray()));

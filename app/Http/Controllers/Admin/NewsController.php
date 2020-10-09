@@ -3,10 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\NewsController as NewsResourceController;
-use App\Http\Requests\StoreNews;
 use App\Models\News;
-use App\Service\TagService;
+use Illuminate\Support\Facades\Cache;
 
 class NewsController extends Controller
 {
@@ -17,7 +15,12 @@ class NewsController extends Controller
 
     public function index()
     {
-        $news = News::latest()->get();
+        $news = Cache::tags(['news', 'tags'])->remember(
+            'news_admin',
+            3600,
+            function () {
+            return News::latest()->get();
+        });
         return view('admin.news.index', compact('news'));
     }
 

@@ -2,11 +2,15 @@
 
 namespace App\Http\Requests;
 
+use App\Traits\FormatingRequestedTags;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
 class StoreNews extends FormRequest
 {
+    use FormatingRequestedTags;
+
+
     protected $binding = 'news';
     protected $table = 'news';
 
@@ -47,6 +51,7 @@ class StoreNews extends FormRequest
     {
         $this->merge([
             'published'   => $this->boolean('published'),
+            'tags'        => $this->formatTags($this->tags),
         ]);
     }
 

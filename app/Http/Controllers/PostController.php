@@ -107,10 +107,10 @@ class PostController extends Controller
      * @param TagService $tagService
      * @return RedirectResponse
      */
-    public function update(StorePost $request, Post $post, TagService $tagService)
+    public function update(StorePost $request, Post $post)
     {
         $post->update($request->validated());
-        $tagService->sync($post, $request->tags);
+        $post->syncTags($request->tags);
         return $this->redirectTo();
     }
 

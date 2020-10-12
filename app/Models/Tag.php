@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
+use App\Interfaces\HasCache;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Facades\Cache;
 
-class Tag extends Model
+class Tag extends Model implements HasCache
 {
     use HasFactory;
 
@@ -36,5 +37,10 @@ class Tag extends Model
                 return static::has('posts')->orHas('news')->get();
             }
         );
+    }
+
+    public function cacheTags(): array
+    {
+        return ['tag'];
     }
 }

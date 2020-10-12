@@ -49,10 +49,10 @@ class NewsController extends Controller
         return view('news.edit', compact('news'));
     }
 
-    public function update(News $news, StoreNews $request, TagService $tagService)
+    public function update(News $news, StoreNews $request)
     {
         $news->update($request->validated());
-        $tagService->sync($news, $request->tags);
+        $news->syncTags($request->tags);
         return $this->redirectTo();
     }
 

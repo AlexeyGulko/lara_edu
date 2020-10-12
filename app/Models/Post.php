@@ -4,14 +4,16 @@ namespace App\Models;
 
 use App\Interfaces\CanBeCommented;
 use App\Interfaces\CanBePublished;
+use App\Interfaces\HasCache;
 use App\Interfaces\HasTags;
+use App\Traits\HasTags as HasTagsTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Post extends Model implements CanBeCommented, CanBePublished, HasTags
+class Post extends Model implements CanBeCommented, CanBePublished, HasTags, HasCache
 {
-    use HasFactory;
+    use HasFactory, HasTagsTrait;
 
     protected $fillable = [
         'title',
@@ -45,8 +47,11 @@ class Post extends Model implements CanBeCommented, CanBePublished, HasTags
     {
         $this->history()->create(
             [
-                'user_id'   => auth()->id(),
-                'before'    => Arr::except($this->getOriginal(), ['created_at', 'updated_at']),
+                'user_id'   => $this->owner->id,
+                'before'    => Arr::except(
+                    $this->getOriginal(),
+                    ['created_at', 'updated_at']
+                ),
                 'after'     => Arr::except($this->getDirty(), ['updated_at']),
             ]
         );
@@ -77,8 +82,8 @@ class Post extends Model implements CanBeCommented, CanBePublished, HasTags
         return 'post';
     }
 
-    public static function syncTags($callback)
+    public function cacheTags(): array
     {
-        static::registerModelEvent('deleting', $callback);
+        return ['post', 'tag'];
     }
 }

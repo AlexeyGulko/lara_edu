@@ -32,9 +32,5 @@ class ViewServiceProvider extends ServiceProvider
         view()->composer(['layout.sidebar'], function (View $view) {
             $view->with('tagsCloud', Tag::tagsCloud());
         });
-
-        Blade::component('post-form', Form::class);
-        Blade::component('delete-button', DeleteButton::class);
-        Blade::component('comment-form', CommentForm::class);
     }
 }

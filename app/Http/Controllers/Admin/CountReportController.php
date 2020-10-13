@@ -2,14 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Events\CountReportGenerated;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CountReportRequest;
 use App\Jobs\CountReportGeneration;
-use App\Mail\CountReportMail;
 use App\Service\CountReportService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 
 class CountReportController extends Controller
 {

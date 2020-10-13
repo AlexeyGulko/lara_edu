@@ -20,6 +20,8 @@ class User extends Authenticatable
         'name', 'email', 'password',
     ];
 
+    protected $with = ['roles',];
+
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -55,10 +57,10 @@ class User extends Authenticatable
 
     public function isAdmin()
     {
-        return $this
-            ->roles()
+        return $this->roles
             ->where('name', 'admin')
-            ->exists();
+            ->isNotEmpty()
+        ;
     }
 
     public function history()

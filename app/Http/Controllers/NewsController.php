@@ -5,14 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreNews;
 use App\Models\News;
 use App\Service\TagService;
+use Illuminate\Support\Facades\Cache;
 
 class NewsController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     protected function redirectTo()
     {
         return redirect()->route('home');
@@ -20,7 +16,12 @@ class NewsController extends Controller
 
     public function index()
     {
-        $news = News::latest()->get();
+        $news = Cache::tags(['news', 'tag'])->remember(
+            'news',
+            3600,
+            function () {
+                return News::latest()->get();
+            });
         return view('news.index', compact('news'));
     }
 
@@ -48,10 +49,10 @@ class NewsController extends Controller
         return view('news.edit', compact('news'));
     }
 
-    public function update(News $news, StoreNews $request, TagService $tagService)
+    public function update(News $news, StoreNews $request)
     {
         $news->update($request->validated());
-        $tagService->sync($news, $request->tags);
+        $news->syncTags($request->tags);
         return $this->redirectTo();
     }
 

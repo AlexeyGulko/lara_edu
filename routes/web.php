@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(
     [
-        'middleware' => ['published.scope']
+        'middleware' => ['published.scope', 'auth']
     ],
     function () {
         Route::get('/', 'PostController@index')
@@ -99,3 +99,7 @@ Route::get('/about', function () {
 ;
 
 Auth::routes();
+
+Route::get('test', function () {
+   return phpinfo();
+});

@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\Interfaces\HasCache;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Cache;
 
-class Tag extends Model
+class Tag extends Model implements HasCache
 {
     use HasFactory;
 
@@ -28,16 +30,17 @@ class Tag extends Model
 
     public static function tagsCloud()
     {
-        // TODO refactoring to dynamic
-
-        return static::has('posts')
-            ->orHas('news')
-            ->get()
-        ;
+        return Cache::tags( 'tag')->remember(
+            'tags',
+            3600,
+            function () {
+                return static::has('posts')->orHas('news')->get();
+            }
+        );
     }
 
-    public function modelAlias()
+    public function cacheTags(): array
     {
-        return $this->modelAlias;
+        return ['tag'];
     }
 }

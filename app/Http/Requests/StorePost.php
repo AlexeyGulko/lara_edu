@@ -2,13 +2,16 @@
 
 namespace App\Http\Requests;
 
+use App\Traits\FormatingRequestedTags;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
 class StorePost extends FormRequest
 {
-    protected $binding = 'post';
-    protected $table = 'posts';
+    use FormatingRequestedTags;
+
+    protected string $binding = 'post';
+    protected string $table = 'posts';
 
     /**
      * Determine if the user is authorized to make this request.
@@ -32,7 +35,7 @@ class StorePost extends FormRequest
             'description' => 'required|max:255',
             'body'        => 'required',
             'published'   => 'present',
-            'tags'        => 'present',
+            'tags'        => 'nullable',
             'slug'        => [
                 'required',
                 'regex:/[A-Za-z\-\_0-9]+/i',
@@ -47,6 +50,7 @@ class StorePost extends FormRequest
     {
         $this->merge([
             'published'   => $this->boolean('published'),
+            'tags'        => $this->formatTags($this->tags),
         ]);
     }
 

@@ -7,11 +7,6 @@ use Illuminate\Contracts\Support\Renderable;
 
 class AdminController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('can:administrate');
-    }
-
     /**
      * @return Renderable
      */

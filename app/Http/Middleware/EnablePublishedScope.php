@@ -13,7 +13,7 @@ class EnablePublishedScope
     /**
      * @var Model[]
      */
-    protected $models = [
+    protected array $models = [
         Post::class,
         News::class,
     ];

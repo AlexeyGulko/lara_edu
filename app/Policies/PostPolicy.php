@@ -10,12 +10,17 @@ class PostPolicy
 {
     use HandlesAuthorization;
 
+    /**
+     * @param User $user
+     * @return bool|void
+     */
     public function before(User $user)
     {
         if ($user->isAdmin()) {
             return true;
         }
     }
+
     /**
      * Determine whether the user can update the model.
      *
@@ -28,6 +33,11 @@ class PostPolicy
         return $user->id === $post->owner->id;
     }
 
+    /**
+     * @param User $user
+     * @param Post $post
+     * @return bool
+     */
     public function show(User $user, Post $post)
     {
         return $post->published
